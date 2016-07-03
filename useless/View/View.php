@@ -30,19 +30,25 @@ class View
         $this->engine = $engine;
     }
 
+    public function addModule($module, $alias)
+    {
+        $path = APP_ROOT . "/{$module}/Resource/views/";
+
+        $this->engine->addPath($path, $alias);
+    }
+
+    public function addPath($path, $alias)
+    {
+        $this->engine->addPath($path, $alias);
+    }
+
+    public function addGlobal($var, $value)
+    {
+        $this->engine->addGlobal($var, $value);
+    }
+
     public function render($file, array $parameters)
     {
-        $segments = explode('::', $file);
-
-        if (count($segments) < 2) {
-            throw  new \Exception("Trying to render unknown file [{$file}]");
-        }
-
-        $module = ucfirst($segments[0]);
-
-        $file = APP_ROOT . "/{$module}/Resource/views/{$segments[1]}.php";
-
-
         return $this->engine->get($file, $parameters);
     }
 }

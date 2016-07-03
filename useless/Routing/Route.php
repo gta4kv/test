@@ -19,7 +19,7 @@ class Route
 {
 
     /**
-     * @var
+     * @var string
      */
     private $url;
 
@@ -34,27 +34,34 @@ class Route
      * @var mixed|null
      */
     private $uses;
+
     /**
      * @var mixed|null
      */
     private $name;
+
     /**
      * @var array
      */
     private $filters = [];
+
     /**
      * @var array
      */
     private $parameters = [];
 
+    /**
+     * @var array
+     */
+    private $middlewares = [];
 
-
-    public function __construct($resource, $methods, $uses)
+    public function __construct($resource, $methods, $uses, $middlewares = [])
     {
         $this->url = $resource;
 
         $this->methods = (array) $methods;
         $this->uses = $uses;
+        $this->middlewares = $middlewares;
     }
 
     /**
@@ -178,7 +185,7 @@ class Route
 
     public function getMiddleware()
     {
-        return Auth::class;
+        return $this->middlewares;
     }
 
     /**

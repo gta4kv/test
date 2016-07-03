@@ -1,0 +1,31 @@
+{% extends '@main/template.twig' %}
+
+
+{% block content %}
+
+    <div class="col-md-12">
+        <h3 class="text-center">Login</h3>
+
+        <div class="col-md-12">
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+            <form method="post">
+                <div class="form-group">
+                    <label for="inputEmail">Email address</label>
+                    <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="password" class="form-control" id="inputPassword"
+                           placeholder="Password">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

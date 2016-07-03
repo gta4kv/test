@@ -8,17 +8,16 @@
 
 namespace Useless\Http\Middlewares;
 
-
 use Useless\Http\Request;
 use Useless\Http\Response;
 
-class Auth
+class Guest
 {
     public function handle(Request $request, $next)
     {
-        if (!$request->getSession()->get('admin'))
+        if ($request->getSession()->get('admin'))
         {
-            (new Response())->redirect('/login');
+            (new Response())->redirect('/');
         }
 
         return $next($request);

@@ -21,8 +21,16 @@ class PdoEngine implements EngineInterface
      */
     private $connection;
 
+    /**
+     * @var
+     */
     private $query;
 
+    /**
+     * @param $sql
+     * @param bool $one
+     * @return $this
+     */
     public function query($sql, $one = false)
     {
         $this->query = $this->connection->query($sql);
@@ -30,6 +38,11 @@ class PdoEngine implements EngineInterface
         return $this;
     }
 
+    /**
+     * @param $sql
+     * @param array $parameters
+     * @return $this
+     */
     public function queryPrepared($sql, $parameters = [])
     {
         $this->query = $this->connection->prepare($sql);
@@ -39,6 +52,9 @@ class PdoEngine implements EngineInterface
         return $this;
     }
 
+    /**
+     * @return null
+     */
     public function one()
     {
         if ($this->query) {
@@ -48,6 +64,9 @@ class PdoEngine implements EngineInterface
         return null;
     }
 
+    /**
+     * @return null
+     */
     public function all()
     {
         if ($this->query) {
@@ -59,6 +78,7 @@ class PdoEngine implements EngineInterface
 
     /**
      * @param $config
+     * @return void
      */
     public function connect($config)
     {

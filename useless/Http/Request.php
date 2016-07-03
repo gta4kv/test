@@ -7,6 +7,7 @@
  */
 
 namespace Useless\Http;
+use Useless\Application;
 
 
 /**
@@ -19,6 +20,16 @@ class Request
      * @var null
      */
     private $csrfToken = null;
+
+    /**
+     * @var Session
+     */
+    protected $session;
+
+    public function __construct(Application $app)
+    {
+        $this->session = $app['session'];
+    }
 
     /**
      * @return string
@@ -34,6 +45,72 @@ class Request
         }
 
         return 'GET';
+    }
+
+
+    /**
+     *
+     */
+    public function terminate()
+    {
+//        $this->getSession()->close();
+    }
+
+    /**
+     * @return Session
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param null $name
+     * @param null $defaultValue
+     * @return array|string|null
+     */
+    public function post($name = null, $defaultValue = null)
+    {
+        if ($name === null) {
+            return $_POST;
+        }
+
+        if (isset($_POST[$name])) {
+            return $_POST[$name];
+        } else if ($defaultValue) {
+            return $defaultValue;
+        }
+
+        return null;
+    }
+
+    /**
+     * Проверяет если это POST запрос
+     * @return bool
+     */
+    public function getIsPost()
+    {
+        return $this->getMethod() == 'POST';
+    }
+    
+    /**
+     * Проверяет если это GET запрос
+     *
+     * @return bool
+     */
+    public function getIsGet()
+    {
+        return $this->getMethod() == 'GET';
+    }
+
+    /**
+     * Проверяет если это Ajax запрос
+     *
+     * @return bool
+     */
+    public function getIsAjax()
+    {
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
 
     /**

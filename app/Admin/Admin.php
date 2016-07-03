@@ -26,21 +26,6 @@ class Admin
     protected $password;
 
     /**
-     * @var AdminMapper
-     */
-    protected $mapper;
-
-    public function __construct(AdminMapper $mapper)
-    {
-        $this->mapper = $mapper;
-    }
-
-    public function findByEmailAndPassword($email, $password)
-    {
-        return $this->mapper->findByEmailAndPassword($email, $password);
-    }
-
-    /**
      * @param mixed $id
      * @return $this
      */

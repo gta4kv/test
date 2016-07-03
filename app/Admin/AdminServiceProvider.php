@@ -9,7 +9,9 @@
 namespace App\Admin;
 
 
-use App\Admin\Http\AdminController;
+use App\Admin\Http\AuthController;
+use Useless\Http\Middlewares\Auth;
+use Useless\Http\Middlewares\Guest;
 use Useless\Routing\Route;
 use Useless\Support\ServiceProvider;
 
@@ -20,10 +22,27 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // routes constructors are ugly, yep..
+
         $this->app['route']->add(new Route(
-            '/:id/:name',
-            ['GET', 'POST'],
-            AdminController::class . '@actionAuth'
+            '/logout',
+            'GET',
+            AuthController::class . '@actionLogout',
+            [
+                Auth::class
+            ]
         ));
+
+
+        $this->app['route']->add(new Route(
+            '/login',
+            ['GET', 'POST'],
+            AuthController::class . '@actionAuth',
+            [
+                Guest::class
+            ]
+        ));
+
+        $this->app['view']->addModule('Admin', 'admin');
     }
 }

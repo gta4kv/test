@@ -5,6 +5,7 @@ namespace Useless;
 use Useless\Config\Config;
 use Useless\Http\Request;
 use Useless\Http\Response;
+use Useless\Http\Session;
 use Useless\Routing\Router;
 use Useless\Routing\RoutingServiceProvider;
 use Useless\Support\ServiceProvider;
@@ -69,6 +70,7 @@ class Application extends Container
             'view' => View::class,
             'config' => Config::class,
             'router' => Router::class,
+            'session' => Session::class,
             'request' => Request::class,
             'response' => Response::class
         ];

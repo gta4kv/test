@@ -52,10 +52,12 @@ class Kernel
         $pipe = $this->app->make(Pipeline::class);
 
         return $pipe->send($this->app['request'])
-            ->through($route->getMiddleware())
+            ->through($route->getMiddleware() ? $route->getMiddleware() : [])
             ->then(function ($request) use ($route) {
                 $content = $this->createAction($route);
 
+                $request->terminate();
+                
                 return $this->app['response']->setContent($content);
             });
     }

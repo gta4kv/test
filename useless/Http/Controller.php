@@ -9,6 +9,7 @@
 namespace Useless\Http;
 
 use Useless\Application;
+use Useless\View\View;
 
 /**
  * Class Controller
@@ -21,7 +22,20 @@ abstract class Controller
      */
     protected $app;
 
+    /**
+     * @var Request
+     */
     protected $request;
+
+    /**
+     * @var View
+     */
+    protected $view;
+
+    /**
+     * @var Response
+     */
+    protected $response;
 
     /**
      * Controller constructor.
@@ -29,6 +43,11 @@ abstract class Controller
     public function __construct()
     {
         $this->app = Application::getInstance();
+
         $this->request = $this->app['request'];
+
+        $this->response = $this->app['response'];
+
+        $this->view = $this->app['view'];
     }
 }

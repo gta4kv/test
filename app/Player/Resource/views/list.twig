@@ -1,0 +1,35 @@
+{% extends '@main/template.twig' %}
+
+
+{% block content %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Birth Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        {% for player in players %}
+            <tr>
+                <td>{{ player.getId() }}</td>
+                <td>{{ player.getUsername() }}</td>
+                <td>{{ player.getEmail() }}</td>
+                <td>{{ player.getFirstName() }}</td>
+                <td>{{ player.getLastName() }}</td>
+                <td>{{ player.getBirthDate() }}</td>
+                <td>
+                    <a href="/player/update/{{ player.getId() }}" title="Delete entry"><span class="glyphicon glyphicon-edit"></span></a>
+                    <a href="/player/delete/{{ player.getId() }}" title="Update entry"><span class="glyphicon glyphicon-trash"></span></a>
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+
+{% endblock %}
