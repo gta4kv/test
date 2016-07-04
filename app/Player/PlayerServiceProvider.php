@@ -29,6 +29,27 @@ class PlayerServiceProvider extends ServiceProvider
             [Auth::class]
         ));
 
+        $this->app['route']->add(new Route(
+            '/player/create',
+            ['GET', 'POST'],
+            PlayerController::class . '@actionCreate',
+            [Auth::class]
+        ));
+
+        $this->app['route']->add(new Route(
+            '/player/update/:id',
+            ['GET', 'POST'],
+            PlayerController::class . '@actionUpdate',
+            [Auth::class]
+        ));
+
+        $this->app['route']->add(new Route(
+            '/player/delete/:id',
+            'GET',
+            PlayerController::class . '@actionDelete',
+            [Auth::class]
+        ));
+
         $this->app['view']->addModule('Player', 'player');
     }
 }

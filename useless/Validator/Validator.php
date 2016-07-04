@@ -3,6 +3,7 @@
 namespace Useless\Validator;
 
 use Useless\Validator\Contract\ValidationInterface;
+use Useless\Validator\Validators\DateValidator;
 use Useless\Validator\Validators\EmailValidator;
 use Useless\Validator\Validators\LengthValidator;
 use Useless\Validator\Validators\RequiredValidator;
@@ -34,7 +35,8 @@ class Validator
     public static $validators = [
         'required' => RequiredValidator::class,
         'length' => LengthValidator::class,
-        'email' => EmailValidator::class
+        'email' => EmailValidator::class,
+        'date' => DateValidator::class
     ];
 
     /**
@@ -47,6 +49,9 @@ class Validator
      */
     public $errors = [];
 
+    /**
+     * @var array
+     */
     public $fieldTranslations = [];
 
 
@@ -63,6 +68,10 @@ class Validator
         return $this->fieldTranslations[$field];
     }
 
+    /**
+     * @param array $translations
+     * @return $this
+     */
     public function setFieldTranslations(array $translations)
     {
         $this->fieldTranslations = $translations;
@@ -184,6 +193,15 @@ class Validator
         return $data[$paramName];
     }
 
+    /**
+     * @return $this
+     */
+    public function resetErrors()
+    {
+        $this->errors = [];
+        
+        return $this;
+    }
 
     /**
      * @param $paramName

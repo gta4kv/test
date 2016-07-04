@@ -7,6 +7,7 @@
  */
 
 namespace Useless\Http;
+
 use Useless\Application;
 
 
@@ -84,6 +85,21 @@ class Request
         return null;
     }
 
+    public function get($name = null, $defaultValue = null)
+    {
+        if ($name === null) {
+            return $_GET;
+        }
+
+        if (isset($_GET[$name])) {
+            return $_GET[$name];
+        } else if ($defaultValue) {
+            return $defaultValue;
+        }
+
+        return null;
+    }
+
     /**
      * Проверяет если это POST запрос
      * @return bool
@@ -92,7 +108,7 @@ class Request
     {
         return $this->getMethod() == 'POST';
     }
-    
+
     /**
      * Проверяет если это GET запрос
      *

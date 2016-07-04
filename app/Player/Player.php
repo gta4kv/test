@@ -142,19 +142,28 @@ class Player
     }
 
     /**
+     * @param boolean $sqlFormat
      * @return string
      */
-    public function getBirthDate()
+    public function getBirthDate($sqlFormat = false)
     {
+        if (!$sqlFormat) {
+            return date('d.m.Y', strtotime($this->birthDate));
+        }
         return $this->birthDate;
     }
 
     /**
      * @param string $birthDate
+     * @param boolean $toSqlFormat
      * @return $this
      */
-    public function setBirthDate($birthDate)
+    public function setBirthDate($birthDate, $toSqlFormat = false)
     {
+        if ($toSqlFormat) {
+            $birthDate = date('Y-m-d G:i:s', strtotime($birthDate));
+        }
+
         $this->birthDate = $birthDate;
 
         return $this;
@@ -177,5 +186,10 @@ class Player
         $this->createdBy = $createdBy;
 
         return $this;
+    }
+
+    public function isNewRecord()
+    {
+        return null == $this->getId();
     }
 }

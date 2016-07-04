@@ -11,10 +11,10 @@ namespace Useless\Validator\Validators;
 use Useless\Validator\Contract\ValidationInterface;
 
 /**
- * Class LengthValidator
+ * Class DateValidator
  * @package Validator\Validators
  */
-class LengthValidator implements ValidationInterface
+class DateValidator implements ValidationInterface
 {
     /**
      * @var
@@ -27,18 +27,10 @@ class LengthValidator implements ValidationInterface
      */
     public function validate($value)
     {
-        $length = mb_strlen($value);
+        $time = \DateTime::createFromFormat('d.m.Y', $value);
 
-        if ($min = $this->getParam('min')) {
-            if ($length < $min) {
-                return "should not be less than {$min} chars";
-            }
-        }
-
-        if ($max = $this->getParam('max')) {
-            if ($length > $max) {
-                return "should not be more than {$max} chars";
-            }
+        if (!$time) {
+            return ' is incorrect date format';
         }
 
         return true;

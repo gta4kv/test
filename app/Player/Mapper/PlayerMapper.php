@@ -57,6 +57,61 @@ class PlayerMapper
     }
 
     /**
+     * @param $id
+     * @return bool
+     */
+    public function delete($id)
+    {
+        $sql = 'delete from players where id = :id';
+
+        $this->database->queryPrepared($sql, [
+            'id' => $id
+        ]);
+
+        return true;
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function create(Player $player)
+    {
+        $sql = "insert into players (" . implode(', ', $this->fields) . ") VALUES (NULL, :username, :firstName, :lastName, :email, :birthDate, :createdBy)";
+
+        $this->database->queryPrepared($sql, [
+            'username' => $player->getUsername(),
+            'firstName' => $player->getFirstName(),
+            'lastName' => $player->getLastName(),
+            'email' => $player->getEmail(),
+            'birthDate' => $player->getBirthDate(true),
+            'createdBy' => $player->getCreatedBy()
+        ]);
+
+        return true;
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function update(Player $player)
+    {
+        $sql = "UPDATE players SET username = :username, first_name = :firstName, last_name = :lastName, email = :email, birth_date = :birthDate WHERE id = :id";
+
+        $this->database->queryPrepared($sql, [
+            'username' => $player->getUsername(),
+            'firstName' => $player->getFirstName(),
+            'lastName' => $player->getLastName(),
+            'email' => $player->getEmail(),
+            'birthDate' => $player->getBirthDate(true),
+            'id' => $player->getId()
+        ]);
+
+        return true;
+    }
+
+    /**
      * @param string $field
      * @param string $value
      * @param string $operator
@@ -70,13 +125,23 @@ class PlayerMapper
             throw new \InvalidArgumentException("Field [$field] is unknown in the context of Player");
         }
 
+        if ($operator == 'like') {
+            $value = "%{$value}%";
+        }
+
         $sql = 'select ' . implode(', ', $this->fields) . " from players where {$field} {$operator} :value";
 
         $query = $this->database->queryPrepared($sql, [
             'value' => $value
         ]);
 
-        $results = $one === true ? (array)$query->one() : $query->all();
+        $results = $one === true ? $query->one() : $query->all();
+
+        if (!$results) {
+            return null;
+        }
+
+        $results = (array) $results;
 
         if ($one === true) {
             return $this->mapObject($results);

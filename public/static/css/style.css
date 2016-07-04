@@ -3,6 +3,11 @@ body {
     padding-bottom: 20px;
 }
 
+.content {
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+
 .header,
 .marketing,
 .footer {

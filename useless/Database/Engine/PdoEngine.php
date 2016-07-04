@@ -53,7 +53,7 @@ class PdoEngine implements EngineInterface
     }
 
     /**
-     * @return null
+     * @return null|array
      */
     public function one()
     {
@@ -65,7 +65,7 @@ class PdoEngine implements EngineInterface
     }
 
     /**
-     * @return null
+     * @return null|array
      */
     public function all()
     {
@@ -85,5 +85,6 @@ class PdoEngine implements EngineInterface
         $dsn = "mysql:dbname={$config['database']};host={$config['host']}";
 
         $this->connection = new PDO($dsn, $config['user'], $config['password']);
+        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 }
