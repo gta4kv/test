@@ -50,6 +50,13 @@ class PlayerServiceProvider extends ServiceProvider
             [Auth::class]
         ));
 
+        $this->app['route']->add(new Route(
+            '/player/checkUsername',
+            'POST',
+            PlayerController::class . '@actionCheckUsername',
+            [Auth::class]
+        ));
+
         $this->app['view']->addModule('Player', 'player');
     }
 }

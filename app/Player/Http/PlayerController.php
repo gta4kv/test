@@ -21,8 +21,14 @@ use Useless\Validator\Validator;
  */
 class PlayerController extends Controller
 {
+    /**
+     * @var Validator
+     */
     protected $validator;
 
+    /**
+     * PlayerController constructor.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -77,6 +83,10 @@ class PlayerController extends Controller
         ]);
     }
 
+    /**
+     * @param array $values
+     * @return bool
+     */
     public function validate(array $values)
     {
         $validation = $this->validator->setRules([
@@ -144,7 +154,26 @@ class PlayerController extends Controller
         return $this->getForm($player, $errors);
     }
 
+    public function actionCheckUsername()
+    {
+        $username = $this->request->post('username');
 
+        /* @var PlayerService $service */
+        $service = $this->app->make(PlayerService::class);
+
+        if ($service->findByUsername($username)) {
+            $status = 1;
+        } else {
+            $status = 0;
+        }
+
+        return json_encode(['taken' => $status]);
+    }
+
+    /**
+     * @param Player $object
+     * @param array $data
+     */
     private function fillObjectFromData(Player &$object, array $data)
     {
         $object

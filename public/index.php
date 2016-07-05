@@ -15,4 +15,4 @@ $response->send();
 $endTime = microtime();
 $totalTime = $endTime - $startTime;
 
-var_dump($totalTime);
+//var_dump($totalTime);
