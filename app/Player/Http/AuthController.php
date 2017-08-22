@@ -6,10 +6,12 @@
  * Time: 19:49
  */
 
-namespace App\Admin\Http;
+namespace App\Player\Http;
 
 use App\Admin\Admin;
 use App\Admin\Service\AdminService;
+use App\Player\Player;
+use App\Player\Service\PlayerService;
 use Useless\Http\Controller;
 
 class AuthController extends Controller
@@ -32,17 +34,17 @@ class AuthController extends Controller
 
     public function actionLogout()
     {
-        $this->request->getSession()->set('admin', '');
+        $this->request->getSession()->set('user', '');
 
         $this->response->redirect('/');
     }
 
     private function getAuth($email, $password)
     {
-        /* @var AdminService $service */
-        $service = $this->app->make(AdminService::class);
+        /* @var PlayerService $service */
+        $service = $this->app->make(PlayerService::class);
 
-        /* @var Admin $admin */
+        /* @var Player $admin */
         $admin = $service->findByEmail($email);
 
         if (! $admin || !password_verify($password, $admin->getPassword())) {
@@ -52,9 +54,9 @@ class AuthController extends Controller
         return $this->setAuth($admin);
     }
 
-    public function setAuth(Admin $admin)
+    public function setAuth(Player $user)
     {
-        $this->request->getSession()->set('admin', $admin);
+        $this->request->getSession()->set('user', $user);
 
         $this->response->redirect('/');
     }

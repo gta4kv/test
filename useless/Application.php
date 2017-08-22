@@ -7,8 +7,6 @@ use Useless\Http\Request;
 use Useless\Http\Response;
 use Useless\Http\Session;
 use Useless\Routing\Router;
-use Useless\Routing\RoutingServiceProvider;
-use Useless\Support\ServiceProvider;
 use Useless\View\View;
 
 /**
@@ -39,7 +37,6 @@ class Application extends Container
 
         $this->registerDefaultBindings();
         $this->registerDefaultAliases();
-        $this->registerDefaultProviders();
     }
 
     /**
@@ -51,14 +48,6 @@ class Application extends Container
 
         $this->instance('app', $this);
         $this->instance(Application::class, $this);
-    }
-
-    /**
-     *
-     */
-    public function registerDefaultProviders()
-    {
-        $this->register(new RoutingServiceProvider($this));
     }
 
     /**

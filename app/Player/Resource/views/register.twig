@@ -1,0 +1,33 @@
+{% extends '@main/template.twig' %}
+
+
+{% block content %}
+
+    <h3 class="text-center">New user</h3>
+
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <form method="post" class="form">
+        <div class="form-group">
+            <label for="inputEmail">Email address</label>
+            <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="inputFullName">Full Name</label>
+            <input type="text" name="fullname" class="form-control" id="inputFullName" placeholder="Full Name">
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Password</label>
+            <input type="password" name="password" class="form-control" id="inputPassword"
+                   placeholder="Password">
+        </div>
+
+        <button type="submit" class="btn btn-success">Sign up</button>
+    </form>
+
+
+{% endblock %}

@@ -2,49 +2,46 @@
 /**
  * Created by PhpStorm.
  * User: dromazanov
- * Date: 03/07/16
- * Time: 22:26
+ * Date: 26/06/16
+ * Time: 17:36
  */
 
 namespace App\Player;
 
-
 class Player
 {
     /**
-     * @var string
-     */
-    public $id;
-
-    /**
-     * @var string
-     */
-    public $username;
-
-    /**
-     * @var string
-     */
-    public $email;
-
-    /**
-     * @var string
-     */
-    public $firstName;
-
-    /**
-     * @var string
-     */
-    public $lastName;
-
-    /**
-     * @var string
-     */
-    public $birthDate;
-
-    /**
      * @var integer
      */
-    public $createdBy;
+    protected $id;
+    /**
+     * @var string
+     */
+    protected $email;
+    /**
+     * @var string
+     */
+    protected $password;
+    /**
+     * @var string
+     */
+    protected $fullName;
+
+    /**
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * @param string $fullName
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
+    }
 
     /**
      * @return string
@@ -55,31 +52,12 @@ class Player
     }
 
     /**
-     * @param string $id
+     * @param mixed $id
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * @param string $username
-     * @return $this
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
 
         return $this;
     }
@@ -93,7 +71,7 @@ class Player
     }
 
     /**
-     * @param string $email
+     * @param mixed $email
      * @return $this
      */
     public function setEmail($email)
@@ -106,90 +84,19 @@ class Player
     /**
      * @return string
      */
-    public function getFirstName()
+    public function getPassword()
     {
-        return $this->firstName;
+        return $this->password;
     }
 
     /**
-     * @param string $firstName
+     * @param mixed $password
      * @return $this
      */
-    public function setFirstName($firstName)
+    public function setPassword($password)
     {
-        $this->firstName = $firstName;
+        $this->password = $password;
 
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
-     * @param string $lastName
-     * @return $this
-     */
-    public function setLastName($lastName)
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    /**
-     * @param boolean $sqlFormat
-     * @return string
-     */
-    public function getBirthDate($sqlFormat = false)
-    {
-        if (!$sqlFormat) {
-            return date('d.m.Y', strtotime($this->birthDate));
-        }
-        return $this->birthDate;
-    }
-
-    /**
-     * @param string $birthDate
-     * @param boolean $toSqlFormat
-     * @return $this
-     */
-    public function setBirthDate($birthDate, $toSqlFormat = false)
-    {
-        if ($toSqlFormat) {
-            $birthDate = date('Y-m-d G:i:s', strtotime($birthDate));
-        }
-
-        $this->birthDate = $birthDate;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
-    }
-
-    /**
-     * @param int $createdBy
-     * @return $this
-     */
-    public function setCreatedBy($createdBy)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    public function isNewRecord()
-    {
-        return null == $this->getId();
     }
 }

@@ -48,7 +48,6 @@ Password: admin
 
 # How it works
 
-Well... I didn't have much time to comment this code, but it is very logical and easy to understand.
 
 #### Basic Lifecycle of the Application
 
@@ -64,6 +63,6 @@ Even though it sounds a bit tough, at this step we basically looking for suitabl
 
 4) Sending Response
 
-In the past step we've got the response from a controller and now we just seding it to the user.
+In the past step we've got the response from a controller and now we just sending it to the user.
 
 That's it!

@@ -1,0 +1,24 @@
+{% extends '@main/template.twig' %}
+
+
+{% block content %}
+    <script>
+        var methodGroups = {{ groups|raw }};
+        var methods = {{ methods|raw }};
+    </script>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>Type</td>
+                <td>Seller</td>
+                <td>PM</td>
+                <td>Min/max</td>
+                <td>Price per 1 BTC</td>
+                {% if admin %}
+                    <td>Amount</td>
+                    <td>Actions</td>
+                {% endif %}
+            </tr>
+        </thead>
+    </table>
+{% endblock %}

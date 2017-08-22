@@ -84,14 +84,14 @@ class Router
             array_shift($matches);
 
             $params = [];
-            if (preg_match_all("/:([\w-%]+)/", $routes->getUrl(), $argument_keys)) {
-                $argument_keys = $argument_keys[1];
+            if (preg_match_all("/:([\w-%]+)/", $routes->getUrl(), $argumentKeys)) {
+                $argumentKeys = $argumentKeys[1];
 
-                if (count($argument_keys) != count($matches)) {
+                if (count($argumentKeys) != count($matches)) {
                     continue;
                 }
 
-                foreach ($argument_keys as $key => $name) {
+                foreach ($argumentKeys as $key => $name) {
                     if (isset($matches[$key])) {
                         $params[$name] = $matches[$key];
                     }

@@ -16,7 +16,7 @@ class Auth
 {
     public function handle(Request $request, $next)
     {
-        if (!$request->getSession()->get('admin'))
+        if (!$request->getSession()->get('user'))
         {
             (new Response())->redirect('/login');
         }

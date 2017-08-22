@@ -47,7 +47,7 @@ class PlayerController extends Controller
             'last_name' => 'Last Name',
             'username' => 'Username',
             'email' => 'Email',
-            'created_by' => 'Create Admin ID'
+            'created_by' => 'Create Player ID'
         ];
 
         $operators = [
@@ -134,7 +134,7 @@ class PlayerController extends Controller
             // if validation went wrong. since i had no time
             // for a better implementation of flushing old inputs
             $this->fillObjectFromData($player, $data);
-
+        
             if ($service->findByUsername($player->getUsername()))
             {
                 $this->validator->setError('username', ' is already in use');
@@ -177,12 +177,12 @@ class PlayerController extends Controller
     private function fillObjectFromData(Player &$object, array $data)
     {
         $object
-        ->setUsername($data['username'])
-        ->setEmail($data['email'])
-        ->setFirstName($data['first_name'])
-        ->setLastName($data['last_name'])
-        ->setBirthDate($data['birth_date'], true)
-        ->setCreatedBy($this->admin->getId());
+            ->setUsername($data['username'])
+            ->setEmail($data['email'])
+            ->setFirstName($data['first_name'])
+            ->setLastName($data['last_name'])
+            ->setBirthDate($data['birth_date'], true)
+            ->setCreatedBy($this->admin->getId());
     }
 
     /**

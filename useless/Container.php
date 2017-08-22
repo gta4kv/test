@@ -102,23 +102,6 @@ class Container implements ArrayAccess
     }
 
     /**
-     * @param Closure $closure
-     * @return Closure
-     */
-    public function share(Closure $closure)
-    {
-        return function ($container) use ($closure) {
-            static $object;
-
-            if (is_null($object)) {
-                $object = $closure($container);
-            }
-
-            return $object;
-        };
-    }
-
-    /**
      * @param $class
      * @return mixed|object
      * @throws Exception
@@ -144,24 +127,10 @@ class Container implements ArrayAccess
     public function getConcrete($abstract)
     {
         if (! isset($this->bindings[$abstract])) {
-            if ($this->missingLeadingSlash($abstract) &&
-                isset($this->bindings['\\'.$abstract])) {
-                $abstract = '\\'.$abstract;
-            }
-
-            return $abstract;
+            return  '\\'.$abstract;
         }
 
         return $this->bindings[$abstract]['concrete'];
-    }
-
-    /**
-     * @param $class
-     * @return bool
-     */
-    protected function missingLeadingSlash($class)
-    {
-        return is_string($class) && strpos($class, '\\') !== 0;
     }
 
     /**
@@ -190,7 +159,6 @@ class Container implements ArrayAccess
         try {
             return $this->make($parameter->getClass()->name);
         } catch (Exception $e) {
-
             throw $e;
         }
     }

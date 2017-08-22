@@ -2,61 +2,54 @@
 /**
  * Created by PhpStorm.
  * User: dromazanov
- * Date: 03/07/16
- * Time: 22:10
+ * Date: 26/06/16
+ * Time: 16:48
  */
 
 namespace App\Player;
 
 
-use App\Player\Http\PlayerController;
+use App\Player\Http\AuthController;
+use App\Player\Http\RegistrationController;
 use Useless\Http\Middlewares\Auth;
+use Useless\Http\Middlewares\Guest;
 use Useless\Routing\Route;
 use Useless\Support\ServiceProvider;
 
 class PlayerServiceProvider extends ServiceProvider
 {
-
     /**
      * @return mixed
      */
     public function register()
     {
+        // routes constructors are ugly, yep..
+
         $this->app['route']->add(new Route(
-            '/',
+            '/logout',
             'GET',
-            PlayerController::class . '@actionList',
-            [Auth::class]
+            AuthController::class . '@actionLogout', [
+                Auth::class
+            ]
         ));
 
+
         $this->app['route']->add(new Route(
-            '/player/create',
+            '/register',
             ['GET', 'POST'],
-            PlayerController::class . '@actionCreate',
-            [Auth::class]
+            RegistrationController::class . '@actionForm', [
+                Guest::class
+            ]
         ));
 
         $this->app['route']->add(new Route(
-            '/player/update/:id',
+            '/login',
             ['GET', 'POST'],
-            PlayerController::class . '@actionUpdate',
-            [Auth::class]
+            AuthController::class . '@actionAuth', [
+                Guest::class
+            ]
         ));
 
-        $this->app['route']->add(new Route(
-            '/player/delete/:id',
-            'GET',
-            PlayerController::class . '@actionDelete',
-            [Auth::class]
-        ));
-
-        $this->app['route']->add(new Route(
-            '/player/checkUsername',
-            'POST',
-            PlayerController::class . '@actionCheckUsername',
-            [Auth::class]
-        ));
-
-        $this->app['view']->addModule('Player', 'player');
+        $this->app['view']->addModule('Player', 'admin');
     }
 }

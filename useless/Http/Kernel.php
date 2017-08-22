@@ -40,6 +40,9 @@ class Kernel
         $this->router = $router;
     }
 
+    /**
+     * @return Response
+     */
     public function handle()
     {
         $route = $this->router->matchCurrentRequest();
@@ -53,7 +56,7 @@ class Kernel
 
         return $pipe->send($this->app['request'])
             ->through($route->getMiddleware() ? $route->getMiddleware() : [])
-            ->then(function ($request) use ($route) {
+            ->then(function (Request $request) use ($route) {
                 $content = $this->createAction($route);
 
                 $request->terminate();

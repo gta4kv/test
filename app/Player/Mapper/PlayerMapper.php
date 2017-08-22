@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: dromazanov
- * Date: 03/07/16
- * Time: 22:31
+ * Date: 26/06/16
+ * Time: 19:18
  */
 
 namespace App\Player\Mapper;
@@ -11,12 +11,14 @@ namespace App\Player\Mapper;
 
 use App\Player\Player;
 use Useless\Database\Database;
+use Useless\Database\MappableObject;
+use Useless\Database\Mapper;
 
 /**
- * Class PlayerMapper
+ * Class AdminMapper
  * @package App\Player\Mapper
  */
-class PlayerMapper
+class PlayerMapper extends Mapper
 {
     /**
      * @var Database
@@ -24,160 +26,66 @@ class PlayerMapper
     protected $database;
 
     /**
-     * @var array
+     * @param $email
+     * @param $password
+     * @return Player|null
      */
-    private $fields = [
-        'id', 'username', 'first_name', 'last_name', 'email', 'birth_date', 'created_by'
-    ];
-
-    /**
-     * PlayerMapper constructor.
-     * @param Database $database
-     */
-    public function __construct(Database $database)
+    public function findByEmailAndPassword($email, $password)
     {
-        $this->database = $database;
-    }
+        $user = $this->database->queryPrepared(
+            "select id, email, password from admins where email = :email and password = :password",
+            compact('email', 'password')
+        )->one();
 
-    /**
-     * @param $id
-     * @return null
-     */
-    public function findById($id)
-    {
-        return $this->findByAny('id', $id, '=');
-    }
-
-    /**
-     * @return Player|\App\Player\Player[]
-     */
-    public function findAll()
-    {
-        return $this->findByAny('id', '0', '>', false);
-    }
-
-    /**
-     * @param $id
-     * @return bool
-     */
-    public function delete($id)
-    {
-        $sql = 'delete from players where id = :id';
-
-        $this->database->queryPrepared($sql, [
-            'id' => $id
-        ]);
-
-        return true;
-    }
-
-    /**
-     * @param Player $player
-     * @return bool
-     */
-    public function create(Player $player)
-    {
-        $sql = "insert into players (" . implode(', ', $this->fields) . ") VALUES (NULL, :username, :firstName, :lastName, :email, :birthDate, :createdBy)";
-
-        $this->database->queryPrepared($sql, [
-            'username' => $player->getUsername(),
-            'firstName' => $player->getFirstName(),
-            'lastName' => $player->getLastName(),
-            'email' => $player->getEmail(),
-            'birthDate' => $player->getBirthDate(true),
-            'createdBy' => $player->getCreatedBy()
-        ]);
-
-        return true;
-    }
-
-    /**
-     * @param Player $player
-     * @return bool
-     */
-    public function update(Player $player)
-    {
-        $sql = "UPDATE players SET username = :username, first_name = :firstName, last_name = :lastName, email = :email, birth_date = :birthDate WHERE id = :id";
-
-        $this->database->queryPrepared($sql, [
-            'username' => $player->getUsername(),
-            'firstName' => $player->getFirstName(),
-            'lastName' => $player->getLastName(),
-            'email' => $player->getEmail(),
-            'birthDate' => $player->getBirthDate(true),
-            'id' => $player->getId()
-        ]);
-
-        return true;
-    }
-
-    /**
-     * @param string $field
-     * @param string $value
-     * @param string $operator
-     * @param boolean $one
-     *
-     * @return Player|Player[]
-     */
-    public function findByAny($field, $value, $operator, $one = true)
-    {
-        if (!$this->isExistingField($field)) {
-            throw new \InvalidArgumentException("Field [$field] is unknown in the context of Player");
-        }
-
-        if ($operator == 'like') {
-            $value = "%{$value}%";
-        }
-
-        $sql = 'select ' . implode(', ', $this->fields) . " from players where {$field} {$operator} :value";
-
-        $query = $this->database->queryPrepared($sql, [
-            'value' => $value
-        ]);
-
-        $results = $one === true ? $query->one() : $query->all();
-
-        if (!$results) {
+        if (!$user) {
             return null;
         }
 
-        $results = (array) $results;
-
-        if ($one === true) {
-            return $this->mapObject($results);
-        }
-
-        $output = [];
-
-        foreach ($results as $result) {
-            $output[] = $this->mapObject($result);
-        }
-
-        return $output;
+        return $this->mapObject($user);
     }
 
     /**
-     * @param $row
-     * @return $this
+     * @param $object
+     * @return Player
      */
-    private function mapObject($row)
+    protected function mapObject($object)
     {
-        return (new Player())
-            ->setId($row['id'])
-            ->setUsername($row['username'])
-            ->setEmail($row['email'])
-            ->setFirstName($row['first_name'])
-            ->setLastName($row['last_name'])
-            ->setBirthDate($row['birth_date'])
-            ->setCreatedBy($row['created_by']);
+        return (new Player($this))
+            ->setId($object['id'])
+            ->setEmail($object['email'])
+            ->setPassword($object['password']);
     }
 
     /**
-     * @param $field
-     * @return bool
+     * @param $email
+     * @return Player|null
      */
-    public function isExistingField($field)
+    public function findByEmail($email)
     {
-        return in_array($field, $this->fields);
+        $user = $this->database->queryPrepared(
+            "select id, email, password from admins where email = :email",
+            compact('email')
+        )->one();
+
+        if (!$user) {
+            return null;
+        }
+
+        return $this->mapObject($user);
+    }
+
+    public function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }
+
+    public function create(MappableObject $object)
+    {
+        // TODO: Implement create() method.
+    }
+
+    public function update(MappableObject $object)
+    {
+        // TODO: Implement update() method.
     }
 }
