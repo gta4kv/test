@@ -10,6 +10,7 @@ namespace App\Player;
 
 
 use App\Player\Http\AuthController;
+use App\Player\Http\DashboardController;
 use App\Player\Http\RegistrationController;
 use Useless\Http\Middlewares\Auth;
 use Useless\Http\Middlewares\Guest;
@@ -18,9 +19,6 @@ use Useless\Support\ServiceProvider;
 
 class PlayerServiceProvider extends ServiceProvider
 {
-    /**
-     * @return mixed
-     */
     public function register()
     {
         // routes constructors are ugly, yep..
@@ -47,6 +45,14 @@ class PlayerServiceProvider extends ServiceProvider
             ['GET', 'POST'],
             AuthController::class . '@actionAuth', [
                 Guest::class
+            ]
+        ));
+
+        $this->app['route']->add(new Route(
+            '/dashboard',
+            ['GET'],
+            DashboardController::class . '@actionList', [
+                Auth::class
             ]
         ));
 

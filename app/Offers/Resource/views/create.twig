@@ -1,0 +1,115 @@
+{% extends '@main/template.twig' %}
+
+{% block content %}
+    <h3 class="text-center">New offer</h3>
+
+    <script>
+        var paymentMethods = {{ methods_json|raw }};
+
+        $(function() {
+            $('#paymentMethodGroup').change(function () {
+                var groupId = $(this).val();
+                var methods = paymentMethods[groupId];
+
+                $('#paymentMethod').find('option').remove();
+
+                $(methods).each(function (index, value) {
+                    $('#paymentMethod').append(
+                        $('<option>').val(value.id).text(value.name)
+                    );
+                });
+            });
+        })
+    </script>
+
+    <form class="form-horizontal" method="post" action="">
+        <div class="form-group">
+            <label for="tradeType" class="col-sm-2 control-label">Trade type</label>
+            <div class="col-sm-10">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="tradeType" value="0" checked>
+                        Sell
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="tradeType" value="1">
+                        Buy
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="currencyId" class="col-sm-2 control-label">Currency</label>
+            <div class="col-sm-10">
+                <select name="currencyId" id="currencyId" class="form-control">
+                    <option value="1">USD</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="paymentMethodGroup" class="col-sm-2 control-label">PM Group</label>
+            <div class="col-sm-10">
+                <select name="paymentMethodGroup" id="paymentMethodGroup" class="form-control">
+                    <option>-- Please select--</option>
+                    {% for group in pmGroups %}
+                        <option value="{{ group.getId() }}">{{ group.getName() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="paymentMethod" class="col-sm-2 control-label">PM</label>
+            <div class="col-sm-10">
+                <select name="paymentMethod" id="paymentMethod" class="form-control">
+                    <option>-- Select group first --</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="minAmount" class="col-sm-2 control-label">Amount Min</label>
+            <div class="col-sm-10">
+                <input type="number" name="amount_min" class="form-control" id="minAmount" placeholder="1"
+                       value="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="maxAmount" class="col-sm-2 control-label">Amount Max</label>
+            <div class="col-sm-10">
+                <input type="number" name="amount_max" class="form-control" id="maxAmount" placeholder="1"
+                       value="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="marginAmount" class="col-sm-2 control-label">Margin (%)</label>
+            <div class="col-sm-10">
+                <input type="number" name="margin" class="form-control" id="marginAmount" placeholder="1"
+                       value="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="finalPrice" class="col-sm-2 control-label">Final price</label>
+            <div class="col-sm-10">
+                <input type="number" name="finalPrice" class="form-control" id="finalPrice" placeholder="1"
+                       value="">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" id="saveButton" class="btn btn-success">
+                    Add
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

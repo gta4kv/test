@@ -1,0 +1,40 @@
+{% extends '@main/template.twig' %}
+
+
+{% block content %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="clearfix">
+                Offers
+
+                <a href="/offer/create" class="btn btn-success pull-right">Create new offer</a>
+            </div>
+        </div>
+        <div class="panel-body">
+            Meh
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Trades
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>Type</td>
+                    <td>Seller</td>
+                    <td>PM</td>
+                    <td>Min/max</td>
+                    <td>Price per 1 BTC</td>
+                    <td>Trade</td>
+                    <td>Actions</td>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

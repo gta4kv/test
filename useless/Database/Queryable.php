@@ -8,6 +8,8 @@
 
 namespace Useless\Database;
 
+use App\Payment\Method;
+
 trait Queryable
 {
     /**
@@ -109,6 +111,20 @@ trait Queryable
     public function findAll()
     {
         return $this->mapper->findAll();
+    }
+
+    public function findAllWithGroupsAsKey()
+    {
+
+        /** @var Method[] $methods */
+        $methods = $this->mapper->findAll();
+        $reArranged = [];
+
+        foreach ($methods as $method) {
+            $reArranged[$method->getGroupId()][] = $method;
+        }
+
+        return $reArranged;
     }
 
     /**

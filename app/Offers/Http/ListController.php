@@ -28,4 +28,18 @@ class ListController extends Controller
             'method' => json_encode($methodService->findAll())
         ]);
     }
+
+    public function actionCreate()
+    {
+        /** @var GroupService $groupService */
+        $groupService = $this->app->make(GroupService::class);
+
+        /** @var MethodService $methodService */
+        $methodService = $this->app->make(MethodService::class);
+
+        return $this->view->render('@offers/create.twig', [
+            'pmGroups' => $groupService->findAll(),
+            'methods_json' => json_encode($methodService->findAllWithGroupsAsKey())
+        ]);
+    }
 }

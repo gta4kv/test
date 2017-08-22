@@ -28,5 +28,11 @@ class OffersServiceProvider extends ServiceProvider
             'GET',
             ListController::class . '@actionShow'
         ));
+
+        $this->app['route']->add(new Route(
+            '/offer/create',
+            'GET',
+            ListController::class . '@actionCreate'
+        ));
     }
 }

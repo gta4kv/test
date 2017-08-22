@@ -24,25 +24,6 @@ class Group implements MappableObject
     public $name;
 
     /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName()
@@ -61,12 +42,30 @@ class Group implements MappableObject
         return $this;
     }
 
-
     /**
      * @return boolean
      */
     public function isNewRecord()
     {
         return null === $this->getId();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }
