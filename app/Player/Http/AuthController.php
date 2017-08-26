@@ -8,8 +8,6 @@
 
 namespace App\Player\Http;
 
-use App\Admin\Admin;
-use App\Admin\Service\AdminService;
 use App\Player\Player;
 use App\Player\Service\PlayerService;
 use Useless\Http\Controller;

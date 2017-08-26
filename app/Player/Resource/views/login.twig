@@ -11,6 +11,12 @@
         </div>
     {% endif %}
 
+    {% if request.get('signupSuccess') %}
+        <p class="alert alert-success">
+            You are successfully registered! You can login now.
+        </p>
+    {% endif %}
+
     <form method="post" class="form">
         <div class="form-group">
             <label for="inputEmail">Email address</label>

@@ -8,19 +8,15 @@
 
 namespace Useless\Validator\Validators;
 
+use Useless\Validator\AbstractValidator;
 use Useless\Validator\Contract\ValidationInterface;
 
 /**
  * Class EmailValidator
  * @package Validator\Validators
  */
-class EmailValidator implements ValidationInterface
+class EmailValidator extends AbstractValidator implements ValidationInterface
 {
-    /**
-     * @var
-     */
-    private $params;
-
     /**
      * @param $value
      * @return bool|string
@@ -32,16 +28,5 @@ class EmailValidator implements ValidationInterface
         }
         
         return true;
-    }
-
-    /**
-     * @param array $params
-     * @return $this
-     */
-    public function setParams(array $params)
-    {
-        $this->params = $params;
-
-        return $this;
     }
 }

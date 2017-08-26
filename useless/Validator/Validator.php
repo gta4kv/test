@@ -2,12 +2,13 @@
 
 namespace Useless\Validator;
 
+use Exception;
 use Useless\Validator\Contract\ValidationInterface;
+use Useless\Validator\Validators\ClosureValidator;
 use Useless\Validator\Validators\DateValidator;
 use Useless\Validator\Validators\EmailValidator;
 use Useless\Validator\Validators\LengthValidator;
 use Useless\Validator\Validators\RequiredValidator;
-use Exception;
 
 /**
  * Basic Usage
@@ -34,9 +35,10 @@ class Validator
      */
     public static $validators = [
         'required' => RequiredValidator::class,
-        'length' => LengthValidator::class,
-        'email' => EmailValidator::class,
-        'date' => DateValidator::class
+        'closure'  => ClosureValidator::class,
+        'length'   => LengthValidator::class,
+        'email'    => EmailValidator::class,
+        'date'     => DateValidator::class,
     ];
 
     /**
@@ -54,18 +56,12 @@ class Validator
      */
     public $fieldTranslations = [];
 
-
     /**
-     * @param string $field
-     * @return string
+     * @return Validator
      */
-    public function getFieldTranslation($field)
+    public static function factory()
     {
-        if (!isset($this->fieldTranslations[$field])) {
-            return $field;
-        }
-
-        return $this->fieldTranslations[$field];
+        return new self;
     }
 
     /**
@@ -78,34 +74,6 @@ class Validator
 
         return $this;
     }
-
-    /**
-     * @param array $rules
-     * @return $this
-     */
-    public function setRules(array $rules)
-    {
-        $this->rules = $rules;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRules()
-    {
-        return $this->rules;
-    }
-
-    /**
-     * @return Validator
-     */
-    public static function factory()
-    {
-        return new self;
-    }
-
 
     /**
      * @param array $data
@@ -140,6 +108,25 @@ class Validator
     }
 
     /**
+     * @return array
+     */
+    public function getRules()
+    {
+        return $this->rules;
+    }
+
+    /**
+     * @param array $rules
+     * @return $this
+     */
+    public function setRules(array $rules)
+    {
+        $this->rules = $rules;
+
+        return $this;
+    }
+
+    /**
      * @param $name
      * @param array $params
      * @return ValidationInterface
@@ -163,7 +150,6 @@ class Validator
 
         return $instance;
     }
-
 
     /**
      * @param $name
@@ -194,16 +180,6 @@ class Validator
     }
 
     /**
-     * @return $this
-     */
-    public function resetErrors()
-    {
-        $this->errors = [];
-        
-        return $this;
-    }
-
-    /**
      * @param $paramName
      * @param $error
      */
@@ -211,7 +187,20 @@ class Validator
     {
         $paramName = $this->getFieldTranslation($paramName);
 
-        $this->errors[] = "The value '{$paramName}' {$error}";
+        $this->errors[] = "'{$paramName}' {$error}";
+    }
+
+    /**
+     * @param string $field
+     * @return string
+     */
+    public function getFieldTranslation($field)
+    {
+        if (!isset($this->fieldTranslations[$field])) {
+            return $field;
+        }
+
+        return $this->fieldTranslations[$field];
     }
 
     /**
@@ -220,6 +209,16 @@ class Validator
     public function getErrors()
     {
         return $this->errors;
+    }
+
+    /**
+     * @return $this
+     */
+    public function resetErrors()
+    {
+        $this->errors = [];
+
+        return $this;
     }
 
 }

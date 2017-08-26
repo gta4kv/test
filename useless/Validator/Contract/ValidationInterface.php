@@ -15,12 +15,6 @@ namespace Useless\Validator\Contract;
 interface ValidationInterface
 {
     /**
-     * @param array $params
-     * @return $this
-     */
-    public function setParams(array $params);
-
-    /**
      * @param $value
      * @return boolean|string
      */

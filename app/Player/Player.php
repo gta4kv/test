@@ -8,7 +8,9 @@
 
 namespace App\Player;
 
-class Player
+use Useless\Database\MappableObject;
+
+class Player implements MappableObject
 {
     /**
      * @var integer
@@ -37,10 +39,13 @@ class Player
 
     /**
      * @param string $fullName
+     * @return $this
      */
     public function setFullName($fullName)
     {
         $this->fullName = $fullName;
+
+        return $this;
     }
 
     /**
@@ -98,5 +103,10 @@ class Player
         $this->password = $password;
 
         return $this;
+    }
+
+    public function isNewRecord()
+    {
+        return $this->getId() === null;
     }
 }

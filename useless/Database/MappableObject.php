@@ -6,7 +6,7 @@
  * Time: 20:43
  */
 
-namespace useless\Database;
+namespace Useless\Database;
 
 
 interface MappableObject

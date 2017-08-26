@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: dromazanov
- * Date: 26/06/16
- * Time: 19:18
+ * Date: 03/07/16
+ * Time: 22:31
  */
 
 namespace App\Player\Mapper;
@@ -15,77 +15,82 @@ use Useless\Database\MappableObject;
 use Useless\Database\Mapper;
 
 /**
- * Class AdminMapper
+ * Class PlayerMapper
  * @package App\Player\Mapper
  */
 class PlayerMapper extends Mapper
 {
     /**
-     * @var Database
+     * @var array
      */
-    protected $database;
+    protected $fields = [
+        'id', 'full_name', 'password', 'email',
+    ];
 
     /**
-     * @param $email
-     * @param $password
-     * @return Player|null
+     * @var string
      */
-    public function findByEmailAndPassword($email, $password)
+    protected $tableName = 'players';
+
+    /**
+     * PlayerMapper constructor.
+     * @param Database $database
+     */
+
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public function delete($id)
     {
-        $user = $this->database->queryPrepared(
-            "select id, email, password from admins where email = :email and password = :password",
-            compact('email', 'password')
-        )->one();
+        $sql = 'delete from players where id = :id';
 
-        if (!$user) {
-            return null;
-        }
+        $this->database->queryPrepared($sql, [
+            'id' => $id
+        ]);
 
-        return $this->mapObject($user);
+        return true;
     }
+
+    /**
+     * @param MappableObject|Player $player
+     * @return bool
+     */
+    public function create(MappableObject $player)
+    {
+        $sql = "insert into players (" . implode(', ', $this->fields) . ") VALUES (NULL, :fullName, :password, :email)";
+
+        $this->database->queryPrepared($sql, [
+            'fullName' => $player->getFullName(),
+            'email' => $player->getEmail(),
+            'password' => password_hash($player->getPassword(), PASSWORD_BCRYPT),
+        ]);
+
+        return true;
+    }
+
+    /**
+     * @param MappableObject|Player $player
+     * @return bool
+     */
+    public function update(MappableObject $player)
+    {
+        return false;
+    }
+
+
 
     /**
      * @param $object
-     * @return Player
+     * @return MappableObject|Player
      */
     protected function mapObject($object)
     {
-        return (new Player($this))
+        return (new Player())
             ->setId($object['id'])
             ->setEmail($object['email'])
+            ->setFullName($object['full_name'])
             ->setPassword($object['password']);
-    }
-
-    /**
-     * @param $email
-     * @return Player|null
-     */
-    public function findByEmail($email)
-    {
-        $user = $this->database->queryPrepared(
-            "select id, email, password from admins where email = :email",
-            compact('email')
-        )->one();
-
-        if (!$user) {
-            return null;
-        }
-
-        return $this->mapObject($user);
-    }
-
-    public function delete($id)
-    {
-        // TODO: Implement delete() method.
-    }
-
-    public function create(MappableObject $object)
-    {
-        // TODO: Implement create() method.
-    }
-
-    public function update(MappableObject $object)
-    {
-        // TODO: Implement update() method.
     }
 }

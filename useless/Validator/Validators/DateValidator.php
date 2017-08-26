@@ -8,19 +8,15 @@
 
 namespace Useless\Validator\Validators;
 
+use Useless\Validator\AbstractValidator;
 use Useless\Validator\Contract\ValidationInterface;
 
 /**
  * Class DateValidator
  * @package Validator\Validators
  */
-class DateValidator implements ValidationInterface
+class DateValidator extends AbstractValidator implements ValidationInterface
 {
-    /**
-     * @var
-     */
-    private $params;
-
     /**
      * @param $value
      * @return bool|string
@@ -34,25 +30,5 @@ class DateValidator implements ValidationInterface
         }
 
         return true;
-    }
-
-    /**
-     * @param array $params
-     * @return $this
-     */
-    public function setParams(array $params)
-    {
-        $this->params = $params;
-
-        return $this;
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    public function getParam($name)
-    {
-        return (isset($this->params[$name])) ? $this->params[$name] : false;
     }
 }

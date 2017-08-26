@@ -9,6 +9,7 @@
 namespace Useless\Http;
 
 use App\Admin\Admin;
+use App\Player\Player;
 use Useless\Application;
 use Useless\View\View;
 
@@ -39,9 +40,9 @@ abstract class Controller
     protected $response;
 
     /**
-     * @var Admin
+     * @var Player
      */
-    protected $admin;
+    protected $player;
 
     /**
      * Controller constructor.
@@ -56,6 +57,6 @@ abstract class Controller
 
         $this->view = $this->app['view'];
 
-        $this->admin = $this->request->getSession()->get('admin', null);
+        $this->player = $this->request->getSession()->get('user', null);
     }
 }
