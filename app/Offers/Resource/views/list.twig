@@ -6,6 +6,18 @@
         var methodGroups = {{ groups|raw }};
         var methods = {{ methods|raw }};
     </script>
+
+    {% if request.get('loginSuccessful') and user %}
+        <p class="alert alert-success" id="welcome-message">
+            You are successfully logged in as {{ user.getFullName() }}. <a href="/logout">Click here to logout.</a>
+        </p>
+        <script>
+            $(function () {
+                $('#welcome-message').fadeOut(3000);
+            })
+        </script>
+    {% endif %}
+
     <table class="table table-bordered">
         <thead>
             <tr>

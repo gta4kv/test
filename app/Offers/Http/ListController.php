@@ -9,6 +9,7 @@
 namespace App\Offers\Http;
 
 
+use App\Currency\CurrencyService;
 use App\Payment\Method\GroupService;
 use App\Payment\MethodService;
 use Useless\Http\Controller;
@@ -25,7 +26,8 @@ class ListController extends Controller
 
         return $this->view->render('@offers/list.twig', [
             'groups' => json_encode($groupService->findAll()),
-            'method' => json_encode($methodService->findAll())
+            'method' => json_encode($methodService->findAll()),
+
         ]);
     }
 
@@ -37,9 +39,13 @@ class ListController extends Controller
         /** @var MethodService $methodService */
         $methodService = $this->app->make(MethodService::class);
 
+        /** @var CurrencyService $currencyService */
+        $currencyService = $this->app->make(CurrencyService::class);
+
         return $this->view->render('@offers/create.twig', [
             'pmGroups' => $groupService->findAll(),
-            'methods_json' => json_encode($methodService->findAllWithGroupsAsKey())
+            'methods_json' => json_encode($methodService->findAllWithGroupsAsKey()),
+            'currencies' => $currencyService->findAll()
         ]);
     }
 }

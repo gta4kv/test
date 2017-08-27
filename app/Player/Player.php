@@ -30,6 +30,11 @@ class Player implements MappableObject
     protected $fullName;
 
     /**
+     * @var integer
+     */
+    protected $currentBalance;
+
+    /**
      * @return string
      */
     public function getFullName()
@@ -104,6 +109,26 @@ class Player implements MappableObject
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getCurrentBalance()
+    {
+        return $this->currentBalance;
+    }
+
+    /**
+     * @param int $currentBalance
+     * @return $this
+     */
+    public function setCurrentBalance($currentBalance)
+    {
+        $this->currentBalance = $currentBalance;
+
+        return $this;
+    }
+
 
     public function isNewRecord()
     {

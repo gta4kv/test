@@ -45,7 +45,9 @@
             <label for="currencyId" class="col-sm-2 control-label">Currency</label>
             <div class="col-sm-10">
                 <select name="currencyId" id="currencyId" class="form-control">
-                    <option value="1">USD</option>
+                    {% for currency in currencies %}
+                        <option value="{{ currency.getId() }}">{{ currency.getName() }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -99,7 +101,7 @@
         <div class="form-group">
             <label for="finalPrice" class="col-sm-2 control-label">Final price</label>
             <div class="col-sm-10">
-                <input type="number" name="finalPrice" class="form-control" id="finalPrice" placeholder="1"
+                <input type="number" disabled class="form-control" id="finalPrice"
                        value="">
             </div>
         </div>

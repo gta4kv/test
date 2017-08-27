@@ -1,0 +1,16 @@
+{% extends '@main/template.twig' %}
+
+
+{% block content %}
+    <div class="alert alert-warning">
+        Something really terrible happened. Here is some details:
+
+        {% if exception.xdebug_message %}
+            <table style="margin-top: 30px;">
+                {{ exception.xdebug_message|raw }}
+            </table>
+        {% else %}
+            {{ exception.getMessage()|raw }}
+        {% endif %}
+    </div>
+{% endblock %}

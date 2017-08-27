@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app['view']->addPath(APP_ROOT . '/../resources/views', 'main');
+
         $this->app['view']->addGlobal('user', $this->app['request']->getSession()->get('user'));
         $this->app['view']->addGlobal('request', $this->app['request']);
 

@@ -56,7 +56,7 @@ class AuthController extends Controller
     {
         $this->request->getSession()->set('user', $user);
 
-        $this->response->redirect('/');
+        $this->response->redirect('/?loginSuccessful=1');
     }
 
     /**

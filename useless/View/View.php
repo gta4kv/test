@@ -30,6 +30,10 @@ class View
         $this->engine = $engine;
     }
 
+    /**
+     * @param $module
+     * @param $alias
+     */
     public function addModule($module, $alias)
     {
         $path = APP_ROOT . "/{$module}/Resource/views/";
@@ -37,17 +41,30 @@ class View
         $this->engine->addPath($path, $alias);
     }
 
+    /**
+     * @param $path
+     * @param $alias
+     */
     public function addPath($path, $alias)
     {
         $this->engine->addPath($path, $alias);
     }
 
+    /**
+     * @param $var
+     * @param $value
+     */
     public function addGlobal($var, $value)
     {
         $this->engine->addGlobal($var, $value);
     }
 
-    public function render($file, array $parameters)
+    /**
+     * @param $file
+     * @param array $parameters
+     * @return string
+     */
+    public function render($file, $parameters = [])
     {
         return $this->engine->get($file, $parameters);
     }

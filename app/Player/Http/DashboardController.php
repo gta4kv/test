@@ -15,6 +15,6 @@ class DashboardController extends Controller
 {
     public function actionList()
     {
-        return $this->view->render('@admin/dashboard.twig', []);
+        return $this->view->render('@admin/dashboard.twig');
     }
 }

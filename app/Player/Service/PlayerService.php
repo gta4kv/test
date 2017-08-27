@@ -10,6 +10,7 @@ namespace App\Player\Service;
 
 
 use App\Player\Mapper\PlayerMapper;
+use App\Player\Player;
 use Useless\Database\Queryable;
 use Useless\Validator\Validator;
 
@@ -39,25 +40,6 @@ class PlayerService
     }
 
     /**
-     * @param $email
-     * @param $password
-     * @return Player|null
-     */
-    public function findByEmailAndPassword($email, $password)
-    {
-        return $this->mapper->findByEmailAndPassword($email, $password);
-    }
-
-    public function findByUsername($username)
-    {
-        $this->setField('username')
-            ->setOperator('=')
-            ->setValue($username);
-
-        return $this->find();
-    }
-
-    /**
      * @param array $values
      * @return Validator
      */
@@ -65,15 +47,15 @@ class PlayerService
     {
         $validator = $this->validator->setRules([
             ['password', [
-                ['required', []],
+                ['required'],
             ]],
             ['full_name', [
-                ['required', []],
+                ['required'],
                 ['length', ['max' => 60]]
             ]],
             ['email', [
-                ['required', []],
-                ['email', []],
+                ['required'],
+                ['email'],
                 ['length', ['max' => 200]],
                 ['closure', ['function' => function () use ($values) {
                     if ($this->findByEmail($values['email'])) {
@@ -93,6 +75,25 @@ class PlayerService
         $validator->validate($values);
 
         return $validator;
+    }
+
+    /**
+     * @param $email
+     * @param $password
+     * @return Player|null
+     */
+    public function findByEmailAndPassword($email, $password)
+    {
+        return $this->mapper->findByEmailAndPassword($email, $password);
+    }
+
+    public function findByUsername($username)
+    {
+        $this->setField('username')
+            ->setOperator('=')
+            ->setValue($username);
+
+        return $this->find();
     }
 
     /**

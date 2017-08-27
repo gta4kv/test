@@ -18,7 +18,21 @@ interface EngineInterface
     /**
      * @param $path
      * @param array $variables
-     * @return mixed
+     * @return string
      */
     public function get($path, array $variables = []);
+
+    /**
+     * @param string $path
+     * @param string $alias
+     * @return void
+     */
+    public function addPath($path, $alias);
+
+    /**
+     * @param string $var
+     * @param string $value
+     * @return void
+     */
+    public function addGlobal($var, $value);
 }

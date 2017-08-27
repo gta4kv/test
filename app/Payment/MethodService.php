@@ -23,4 +23,17 @@ class MethodService
     {
         $this->mapper = $mapper;
     }
+
+    public function findAllWithGroupsAsKey()
+    {
+        /** @var Method[] $methods */
+        $methods = $this->mapper->findAll();
+        $reArranged = [];
+
+        foreach ($methods as $method) {
+            $reArranged[$method->getGroupId()][] = $method;
+        }
+
+        return $reArranged;
+    }
 }

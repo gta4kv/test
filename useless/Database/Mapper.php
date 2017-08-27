@@ -137,7 +137,7 @@ abstract class Mapper
 
     /**
      * @param $object
-     * @return array
+     * @return MappableObject
      */
     abstract protected function mapObject($object);
 

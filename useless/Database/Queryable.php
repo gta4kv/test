@@ -113,20 +113,6 @@ trait Queryable
         return $this->mapper->findAll();
     }
 
-    public function findAllWithGroupsAsKey()
-    {
-
-        /** @var Method[] $methods */
-        $methods = $this->mapper->findAll();
-        $reArranged = [];
-
-        foreach ($methods as $method) {
-            $reArranged[$method->getGroupId()][] = $method;
-        }
-
-        return $reArranged;
-    }
-
     /**
      * @param bool $one
      * @return MappableObject|MappableObject[]

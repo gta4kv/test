@@ -5,7 +5,7 @@ namespace Useless;
 use Closure;
 use RuntimeException;
 
-// not written by me ): !
+// stolen from lara
 
 class Pipeline
 {

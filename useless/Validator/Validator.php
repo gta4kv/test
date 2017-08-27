@@ -7,6 +7,7 @@ use Useless\Validator\Contract\ValidationInterface;
 use Useless\Validator\Validators\ClosureValidator;
 use Useless\Validator\Validators\DateValidator;
 use Useless\Validator\Validators\EmailValidator;
+use Useless\Validator\Validators\IntegerValidator;
 use Useless\Validator\Validators\LengthValidator;
 use Useless\Validator\Validators\RequiredValidator;
 
@@ -36,6 +37,7 @@ class Validator
     public static $validators = [
         'required' => RequiredValidator::class,
         'closure'  => ClosureValidator::class,
+        'integer'  => IntegerValidator::class,
         'length'   => LengthValidator::class,
         'email'    => EmailValidator::class,
         'date'     => DateValidator::class,
@@ -88,7 +90,7 @@ class Validator
 
             foreach ($validators as $validator) {
                 $validatorName = $validator[0];
-                $validatorParams = $validator[1];
+                $validatorParams = isset($validator[1]) ? $validator[1] : [];
 
                 $validator = $this->createValidator($validatorName, $validatorParams);
 

@@ -24,7 +24,7 @@ class PlayerMapper extends Mapper
      * @var array
      */
     protected $fields = [
-        'id', 'full_name', 'password', 'email',
+        'id', 'full_name', 'password', 'email', 'current_balance'
     ];
 
     /**
@@ -59,12 +59,13 @@ class PlayerMapper extends Mapper
      */
     public function create(MappableObject $player)
     {
-        $sql = "insert into players (" . implode(', ', $this->fields) . ") VALUES (NULL, :fullName, :password, :email)";
+        $sql = "insert into players (" . implode(', ', $this->fields) . ") VALUES (NULL, :fullName, :password, :email, :currentBalance)";
 
         $this->database->queryPrepared($sql, [
             'fullName' => $player->getFullName(),
             'email' => $player->getEmail(),
             'password' => password_hash($player->getPassword(), PASSWORD_BCRYPT),
+            'currentBalance' => 5.0
         ]);
 
         return true;
@@ -91,6 +92,7 @@ class PlayerMapper extends Mapper
             ->setId($object['id'])
             ->setEmail($object['email'])
             ->setFullName($object['full_name'])
-            ->setPassword($object['password']);
+            ->setPassword($object['password'])
+            ->setCurrentBalance($object['current_balance']);
     }
 }
