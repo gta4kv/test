@@ -8,10 +8,14 @@
 
 namespace Useless\Database;
 
-use App\Payment\Method;
+use App\Currency\Currency;
 
 trait Queryable
 {
+    /**
+     * @var Mapper
+     */
+    protected $mapper;
     /**
      * @var string
      */
@@ -24,12 +28,6 @@ trait Queryable
      * @var string
      */
     private $operator;
-
-    /**
-     * @var Mapper
-     */
-    protected $mapper;
-
     /**
      * @var array
      */
@@ -50,6 +48,85 @@ trait Queryable
             ->setValue($value);
 
         return $this->find(false);
+    }
+
+    /**
+     * @param bool $one
+     * @return MappableObject|MappableObject[]
+     */
+    private function find($one = true)
+    {
+        if (!$this->isAllowedOperator($this->getOperator())) {
+            throw new \InvalidArgumentException("Operator [{$this->getOperator()}] is unknown");
+        }
+
+        return $this->mapper->findByAny($this->getField(), $this->getValue(), $this->getOperator(), $one);
+    }
+
+    /**
+     * @param $operator
+     * @return bool
+     */
+    protected function isAllowedOperator($operator)
+    {
+        return in_array($operator, $this->allowed);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOperator()
+    {
+        return $this->operator;
+    }
+
+    /**
+     * @param mixed $operator
+     * @return $this
+     */
+    public function setOperator($operator)
+    {
+        $this->operator = $operator;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
+
+    /**
+     * @param mixed $field
+     * @return $this
+     */
+    public function setField($field)
+    {
+        $this->field = $field;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param mixed $value
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+
+        return $this;
     }
 
     /**
@@ -111,84 +188,5 @@ trait Queryable
     public function findAll()
     {
         return $this->mapper->findAll();
-    }
-
-    /**
-     * @param bool $one
-     * @return MappableObject|MappableObject[]
-     */
-    private function find($one = true)
-    {
-        if (!$this->isAllowedOperator($this->getOperator())) {
-            throw new \InvalidArgumentException("Operator [{$this->getOperator()}] is unknown");
-        }
-
-        return $this->mapper->findByAny($this->getField(), $this->getValue(), $this->getOperator(), $one);
-    }
-
-    /**
-     * @param $operator
-     * @return bool
-     */
-    protected function isAllowedOperator($operator)
-    {
-        return in_array($operator, $this->allowed);
-    }
-
-    /**
-     * @return string
-     */
-    public function getField()
-    {
-        return $this->field;
-    }
-
-    /**
-     * @param mixed $field
-     * @return $this
-     */
-    public function setField($field)
-    {
-        $this->field = $field;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     * @return $this
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOperator()
-    {
-        return $this->operator;
-    }
-
-    /**
-     * @param mixed $operator
-     * @return $this
-     */
-    public function setOperator($operator)
-    {
-        $this->operator = $operator;
-
-        return $this;
     }
 }

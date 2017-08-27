@@ -26,6 +26,7 @@
         <nav>
             <ul class="nav nav-pills pull-right">
                 {% if not user %}
+                    <li role=presentation><a href="/">Home</a></li>
                     <li role="presentation"><a href="/register">Register</a></li>
                     <li role="presentation"><a href="/login">Login</a></li>
                 {% else %}

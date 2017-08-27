@@ -22,18 +22,7 @@ class CurrencyMapper extends Mapper
     /**
      * @var array
      */
-    protected $fields = ['id', 'name'];
-
-    /**
-     * @param $object
-     * @return MappableObject
-     */
-    protected function mapObject($object)
-    {
-        return (new Currency())
-            ->setId($object['id'])
-            ->setName($object['name']);
-    }
+    protected $fields = ['id', 'name', 'sign', 'exchange_rate'];
 
     public function delete($id)
     {
@@ -48,5 +37,18 @@ class CurrencyMapper extends Mapper
     public function update(MappableObject $object)
     {
         // TODO: Implement update() method.
+    }
+
+    /**
+     * @param $object
+     * @return MappableObject
+     */
+    protected function mapObject($object)
+    {
+        return (new Currency())
+            ->setId($object['id'])
+            ->setName($object['name'])
+            ->setSign($object['sign'])
+            ->setExchangeRate($object['exchange_rate']);
     }
 }

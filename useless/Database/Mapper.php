@@ -29,6 +29,11 @@ abstract class Mapper
     protected $tableName;
 
     /**
+     * @var array
+     */
+    private $cache;
+
+    /**
      * Mapper constructor.
      *
      * @param Database $database
@@ -65,6 +70,12 @@ abstract class Mapper
 
         $sql = 'select ' . implode(', ', $this->fields) . " from {$this->getTableName()} where {$field} {$operator} :value";
 
+        $cacheKey = md5($sql . $value . $one);
+
+        if (isset($this->cache[$cacheKey])) {
+            return $this->cache[$cacheKey];
+        }
+
         $query = $this->database->queryPrepared($sql, [
             'value' => $value
         ]);
@@ -76,16 +87,19 @@ abstract class Mapper
         }
 
         $results = (array)$results;
+        $output = null;
 
         if ($one === true) {
-            return $this->mapObject($results);
+            $output = $this->mapObject($results);
+        } else {
+            $output = [];
+
+            foreach ($results as $result) {
+                $output[] = $this->mapObject($result);
+            }
         }
 
-        $output = [];
-
-        foreach ($results as $result) {
-            $output[] = $this->mapObject($result);
-        }
+        $this->cache[$cacheKey] = $output;
 
         return $output;
     }

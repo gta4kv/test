@@ -10,6 +10,10 @@ namespace App\Player;
 
 use Useless\Database\MappableObject;
 
+/**
+ * Class Player
+ * @package App\Player
+ */
 class Player implements MappableObject
 {
     /**
@@ -49,25 +53,6 @@ class Player implements MappableObject
     public function setFullName($fullName)
     {
         $this->fullName = $fullName;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param mixed $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
 
         return $this;
     }
@@ -129,9 +114,30 @@ class Player implements MappableObject
         return $this;
     }
 
-
+    /**
+     * @return bool
+     */
     public function isNewRecord()
     {
         return $this->getId() === null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

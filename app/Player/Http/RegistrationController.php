@@ -11,13 +11,13 @@ class RegistrationController extends Controller
     public function actionForm()
     {
         /** @var PlayerService $service */
-        $service = $this->app->make(PlayerService::class);
+        $service = app(PlayerService::class);
 
         $player = new Player();
         $errors = [];
 
-        if ($this->request->getIsPost()) {
-            $data = $this->request->post();
+        if ($this->request->isPost()) {
+            $data = request()->post();
 
             $this->fillObjectFromPost($player, $data);
 
@@ -28,11 +28,11 @@ class RegistrationController extends Controller
             } else {
                 $service->createOrUpdate($player);
 
-                $this->response->redirect('/login?signupSuccess=1');
+                response()->redirect('/login?signupSuccess=1');
             }
         }
 
-        return $this->view->render('@admin/register.twig', [
+        return view()->render('@admin/register.twig', [
             'player' => $player,
             'errors' => $errors
         ]);

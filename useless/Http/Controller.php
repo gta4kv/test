@@ -10,6 +10,7 @@ namespace Useless\Http;
 
 use App\Admin\Admin;
 use App\Player\Player;
+use App\Player\Service\PlayerService;
 use Useless\Application;
 use Useless\View\View;
 
@@ -49,14 +50,19 @@ abstract class Controller
      */
     public function __construct()
     {
-        $this->app = Application::getInstance();
+        $this->app = app();
 
-        $this->request = $this->app['request'];
+        $this->request = request();
 
-        $this->response = $this->app['response'];
+        $this->response = response();
 
-        $this->view = $this->app['view'];
+        $this->view = view();
 
-        $this->player = $this->request->getSession()->get('user', null);
+        if ($user = session()->get('user', null)) {
+            $this->player = app(PlayerService::class)->findById($user->getId());
+        } else {
+            $this->player = null;
+        }
+
     }
 }

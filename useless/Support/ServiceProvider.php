@@ -17,20 +17,6 @@ use Useless\Application;
 abstract class ServiceProvider
 {
     /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * ServiceProvider constructor.
-     * @param Application $app
-     */
-    public function __construct($app)
-    {
-        $this->app = $app;
-    }
-
-    /**
      * @return mixed
      */
     abstract public function register();

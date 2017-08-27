@@ -39,4 +39,11 @@ abstract class AbstractValidator
     {
         return (isset($this->params[$name])) ? $this->params[$name] : false;
     }
+
+
+    /**
+     * @param $value
+     * @return bool|string
+     */
+    abstract public function validate($value);
 }

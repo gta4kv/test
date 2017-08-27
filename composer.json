@@ -1,12 +1,14 @@
 {
-    "require": {
-        "twig/twig": "~1.0"
-    },
-
-    "autoload": {
-        "psr-4": {
-            "Useless\\": "useless/",
-            "App\\": "app/"
-        }
+  "require": {
+    "twig/twig": "~1.0"
+  },
+  "autoload": {
+    "files": [
+      "helpers.php"
+    ],
+    "psr-4": {
+      "Useless\\": "useless/",
+      "App\\": "app/"
     }
+  }
 }

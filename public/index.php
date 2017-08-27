@@ -24,6 +24,6 @@ try {
 $response->send();
 
 $endTime = microtime();
-$totalTime = $endTime - $startTime;
+//$totalTime = $endTime - $startTime;
 
 //var_dump($totalTime);

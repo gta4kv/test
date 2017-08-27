@@ -3,12 +3,22 @@
 {% block content %}
     <h3 class="text-center">New offer</h3>
 
+    {% if errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <script>
         var paymentMethods = {{ methods_json|raw }};
 
-        $(function() {
-            $('#paymentMethodGroup').change(function () {
-                var groupId = $(this).val();
+        $(document).ready(function () {
+            $('#paymentMethodGroup').on('change', function () {
+                var groupId = $('#paymentMethodGroup').find('option:selected').val();
                 var methods = paymentMethods[groupId];
 
                 $('#paymentMethod').find('option').remove();
@@ -19,7 +29,36 @@
                     );
                 });
             });
-        })
+
+            function calculateFinalPrice() {
+                var margin = $('#marginAmount').val();
+                var currency = $('#currencyId').find('option:selected');
+                var finalPrice = (parseFloat('{{ bitcoinPrice }}') + (parseFloat('{{ bitcoinPrice }}') * (margin / 100))) * currency.data('exchange-rate') + ' ' + currency.data('sign');
+                $('#finalPrice').val(finalPrice);
+            }
+
+            $('#marginAmount').keyup(function () {
+                calculateFinalPrice();
+            });
+
+            $('#currencyId').change(function () {
+                calculateFinalPrice();
+            });
+
+            function setMethodAndGroup() {
+                var $group = $('#paymentMethodGroup');
+                var $method = $('#paymentMethod');
+
+                $group.find('option').removeAttr('selected').filter('[value={{ selected.group }}]').prop('selected', true);
+                $group.change();
+
+                $method.find('option[value={{ selected.method }}]').prop('selected', true);
+            }
+
+            calculateFinalPrice();
+            setMethodAndGroup();
+        });
+
     </script>
 
     <form class="form-horizontal" method="post" action="">
@@ -44,9 +83,17 @@
         <div class="form-group">
             <label for="currencyId" class="col-sm-2 control-label">Currency</label>
             <div class="col-sm-10">
-                <select name="currencyId" id="currencyId" class="form-control">
+                <select name="currencyId" id="currencyId" class="form-control" required>
                     {% for currency in currencies %}
-                        <option value="{{ currency.getId() }}">{{ currency.getName() }}</option>
+                        {% set selected = '' %}
+
+                        {% if offer.getCurrencyId() == currency.getId() %}
+                            {% set selected = ' selected' %}
+                        {% endif %}
+
+                        <option value="{{ currency.getId() }}" {{ selected }}
+                                data-exchange-rate="{{ currency.getExchangeRate() }}"
+                                data-sign="{{ currency.getSign() }}">{{ currency.getName() }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -55,8 +102,8 @@
         <div class="form-group">
             <label for="paymentMethodGroup" class="col-sm-2 control-label">PM Group</label>
             <div class="col-sm-10">
-                <select name="paymentMethodGroup" id="paymentMethodGroup" class="form-control">
-                    <option>-- Please select--</option>
+                <select name="paymentMethodGroup" id="paymentMethodGroup" class="form-control" required>
+                    <option>-- Please select --</option>
                     {% for group in pmGroups %}
                         <option value="{{ group.getId() }}">{{ group.getName() }}</option>
                     {% endfor %}
@@ -64,10 +111,13 @@
             </div>
         </div>
 
+        <script>$(document).ready(function () {
+            })</script>
+
         <div class="form-group">
             <label for="paymentMethod" class="col-sm-2 control-label">PM</label>
             <div class="col-sm-10">
-                <select name="paymentMethod" id="paymentMethod" class="form-control">
+                <select name="paymentMethod" id="paymentMethod" class="form-control" required>
                     <option>-- Select group first --</option>
                 </select>
             </div>
@@ -77,40 +127,46 @@
         <div class="form-group">
             <label for="minAmount" class="col-sm-2 control-label">Amount Min</label>
             <div class="col-sm-10">
-                <input type="number" name="amount_min" class="form-control" id="minAmount" placeholder="1"
-                       value="">
+                <input type="text" name="amountMin" class="form-control" id="minAmount" placeholder="1"
+                       value="{{ offer.getMin() }}" required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="maxAmount" class="col-sm-2 control-label">Amount Max</label>
             <div class="col-sm-10">
-                <input type="number" name="amount_max" class="form-control" id="maxAmount" placeholder="1"
-                       value="">
+                <input type="text" name="amountMax" class="form-control" id="maxAmount" placeholder="100"
+                       value="{{ offer.getMax() }}" required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="marginAmount" class="col-sm-2 control-label">Margin (%)</label>
             <div class="col-sm-10">
-                <input type="number" name="margin" class="form-control" id="marginAmount" placeholder="1"
-                       value="">
+                <input type="number" name="margin" class="form-control" id="marginAmount" placeholder="0.1"
+                       value="{{ offer.getMargin() }}" max="1000" min="0.1" step="0.1" required>
             </div>
         </div>
 
         <div class="form-group">
             <label for="finalPrice" class="col-sm-2 control-label">Final price</label>
             <div class="col-sm-10">
-                <input type="number" disabled class="form-control" id="finalPrice"
+                <input type="text" disabled class="form-control" id="finalPrice"
                        value="">
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" id="saveButton" class="btn btn-success">
-                    Add
-                </button>
+                {% if offer.isNewRecord() %}
+                    <button type="submit" id="saveButton" class="btn btn-success">
+                        Create
+                    </button>
+                {% else %}
+                    <button type="submit" id="saveButton" class="btn btn-info">
+                        Update
+                    </button>
+                {% endif %}
             </div>
         </div>
     </form>

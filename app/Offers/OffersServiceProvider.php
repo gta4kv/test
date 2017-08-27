@@ -8,7 +8,8 @@
 
 namespace App\Offers;
 
-use App\Offers\Http\ListController;
+use App\Offers\Http\OfferController;
+use Useless\Http\Middlewares\Auth;
 use Useless\Routing\Route;
 use Useless\Support\ServiceProvider;
 
@@ -16,23 +17,52 @@ class OffersServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app['view']->addModule('Offers', 'offers');
+        view()->addModule('Offers', 'offers');
 
         $this->registerRoutes();
     }
 
     private function registerRoutes()
     {
-        $this->app['route']->add(new Route(
+        route()->add(new Route(
             '/',
             'GET',
-            ListController::class . '@actionShow'
+            OfferController::class . '@actionShow'
         ));
 
-        $this->app['route']->add(new Route(
+        route()->add(new Route(
             '/offer/create',
-            'GET',
-            ListController::class . '@actionCreate'
+            ['GET', 'POST'],
+            OfferController::class . '@actionCreateOrUpdate',
+            [Auth::class]
+        ));
+
+        route()->add(new Route(
+            '/offer/:offerId',
+            ['GET', 'POST'],
+            OfferController::class . '@actionCreateOrUpdate',
+            [Auth::class]
+        ));
+
+        route()->add(new Route(
+            '/offer/disable/:offerId',
+            ['GET'],
+            OfferController::class . '@actionDisable',
+            [Auth::class]
+        ));
+
+        route()->add(new Route(
+            '/offer/enable/:offerId',
+            ['GET'],
+            OfferController::class . '@actionEnable',
+            [Auth::class]
+        ));
+
+        route()->add(new Route(
+            '/offer/delete/:offerId',
+            ['GET'],
+            OfferController::class . '@actionDelete',
+            [Auth::class]
         ));
     }
 }

@@ -11,15 +11,7 @@
                 <a href="/offer/create" class="btn btn-success pull-right">Create new offer</a>
             </div>
         </div>
-        <div class="panel-body">
-            Meh
-        </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Trades
-        </div>
         <div class="panel-body">
             <table class="table table-bordered">
                 <thead>
@@ -29,12 +21,66 @@
                     <td>PM</td>
                     <td>Min/max</td>
                     <td>Price per 1 BTC</td>
-                    <td>Trade</td>
                     <td>Actions</td>
                 </tr>
                 </thead>
+                <tbody>
+                {% for offer in offerService.findAllByPlayerId(user.getId()) %}
+                    {% set currency = currencyService.findById(offer.getCurrencyId()) %}
+                    <tr>
+                        <td>
+                            {% if offer.getType() == 0 %}
+                                Sell
+                            {% else %}
+                                Buy
+                            {% endif %}
+                        </td>
+                        <td>{{ playerService.findById(offer.getPlayerId()).getFullName() }}</td>
+                        <td>{{ paymentMethodService.findById(offer.getPaymentMethodId()).getName() }}</td>
+                        <td>{{ offer.getMin() }} {{ currency.getSign() }}
+                            / {{ offer.getMax( ) }} {{ currency.getSign() }}</td>
+                        <td>{{ (bitcoin + ((offer.getMargin() / 100) * bitcoin)) * currency.getExchangeRate() }} {{ currency.getSign() }}</td>
+                        <td>
+                            <a href="/offer/{{ offer.getId() }}">Edit</a> |
+                            <a href="/offer/delete/{{ offer.getId() }}" class="delete-link">Delete</a> |
+
+                            {% if offer.isDisabled() %}
+                                <a href="/offer/enable/{{ offer.getId() }}">Enable</a>
+                            {% else %}
+                                <a href="/offer/disable/{{ offer.getId() }}">Disable</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
             </table>
         </div>
     </div>
 
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Trades
+        </div>
+        <div class="panel-body">
+            Not implemented yet
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Balance changes</div>
+        <div class="panel-body">
+
+        </div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('.delete-link').on('click', function (event) {
+                if (!confirm('Are you sure?')) {
+                    event.preventDefault();
+                }
+            })
+        });
+    </script>
 {% endblock %}

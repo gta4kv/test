@@ -9,8 +9,6 @@
 namespace Useless\Routing;
 
 
-use Useless\Application;
-
 /**
  * Class Router
  * @package Useless\Routing
@@ -18,35 +16,12 @@ use Useless\Application;
 class Router
 {
     /**
-     * @var RouteCollection
-     */
-    protected $routes;
-
-    /**
-     * @var Application
-     */
-    protected $app;
-
-
-    /**
-     * Router constructor.
-     * 
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-        $this->routes = $app['route'];
-    }
-
-
-    /**
      * @return bool|Route
      */
     public function matchCurrentRequest()
     {
-        $requestMethod = $this->app['request']->getMethod();
-        $requestUrl = $this->app['request']->getUri();
+        $requestMethod = app('request')->getMethod();
+        $requestUrl = app('request')->getUri();
 
         if (($pos = strpos($requestUrl, '?')) !== false) {
             $requestUrl = substr($requestUrl, 0, $pos);
@@ -62,7 +37,7 @@ class Router
      */
     public function match($requestUrl, $requestMethod = 'GET')
     {
-        foreach ($this->routes->all() as $routes) {
+        foreach (route()->all() as $routes) {
 
             if (!in_array($requestMethod, (array)$routes->getMethods())) {
                 continue;
@@ -101,6 +76,7 @@ class Router
 
             return $routes;
         }
+
         return false;
     }
 }

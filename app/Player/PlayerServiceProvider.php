@@ -17,13 +17,20 @@ use Useless\Http\Middlewares\Guest;
 use Useless\Routing\Route;
 use Useless\Support\ServiceProvider;
 
+/**
+ * Class PlayerServiceProvider
+ * @package App\Player
+ */
 class PlayerServiceProvider extends ServiceProvider
 {
+    /**
+     *
+     */
     public function register()
     {
         // routes constructors are ugly, yep..
 
-        $this->app['route']->add(new Route(
+        \route()->add(new Route(
             '/logout',
             'GET',
             AuthController::class . '@actionLogout', [
@@ -32,7 +39,7 @@ class PlayerServiceProvider extends ServiceProvider
         ));
 
 
-        $this->app['route']->add(new Route(
+        route()->add(new Route(
             '/register',
             ['GET', 'POST'],
             RegistrationController::class . '@actionForm', [
@@ -40,7 +47,7 @@ class PlayerServiceProvider extends ServiceProvider
             ]
         ));
 
-        $this->app['route']->add(new Route(
+        route()->add(new Route(
             '/login',
             ['GET', 'POST'],
             AuthController::class . '@actionAuth', [
@@ -48,14 +55,12 @@ class PlayerServiceProvider extends ServiceProvider
             ]
         ));
 
-        $this->app['route']->add(new Route(
+        route()->add(new Route(
             '/dashboard',
             ['GET'],
-            DashboardController::class . '@actionList', [
-                Auth::class
-            ]
+            DashboardController::class . '@actionList', [Auth::class]
         ));
 
-        $this->app['view']->addModule('Player', 'admin');
+        view()->addModule('Player', 'admin');
     }
 }

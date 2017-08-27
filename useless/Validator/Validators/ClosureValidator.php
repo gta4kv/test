@@ -33,7 +33,7 @@ class ClosureValidator extends AbstractValidator implements ValidationInterface
         $closure = $this->getParam('function');
 
         // assuming that you closure returns string or true as all other validators
-        return $closure();
+        return $closure($value);
     }
 
 

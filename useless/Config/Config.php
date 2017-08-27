@@ -8,8 +8,6 @@
 
 namespace Useless\Config;
 
-use Useless\Application;
-
 /**
  * Class Config
  * @package Useless\Config
@@ -20,19 +18,6 @@ class Config
      * @var
      */
     protected $configs;
-    /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
-     * Config constructor.
-     * @param Application $app
-     */
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
 
     /**
      * @param $section
@@ -55,7 +40,7 @@ class Config
      */
     private function load($section)
     {
-        $path = $this->app->basePath . "/config/{$section}.php";
+        $path = app()->basePath . "/config/{$section}.php";
 
         if (!file_exists($path)) {
             throw new \Exception("Can not locate config [{$section}] in path [{$path}]");

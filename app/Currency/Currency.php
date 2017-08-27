@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Currency;
 
 use Useless\Database\MappableObject;
@@ -14,22 +15,49 @@ class Currency implements MappableObject
      * @var string
      */
     private $name;
+    /**
+     * @var string
+     */
+    private $sign;
+    /**
+     * @var float
+     */
+    private $exchangeRate;
 
     /**
-     * @return int
+     * @return float
      */
-    public function getId()
+    public function getExchangeRate()
     {
-        return $this->id;
+        return $this->exchangeRate;
     }
 
     /**
-     * @param int $id
+     * @param float $exchangeRate
      * @return $this
      */
-    public function setId($id)
+    public function setExchangeRate($exchangeRate)
     {
-        $this->id = $id;
+        $this->exchangeRate = $exchangeRate;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSign()
+    {
+        return $this->sign;
+    }
+
+    /**
+     * @param string $sign
+     * @return $this
+     */
+    public function setSign($sign)
+    {
+        $this->sign = $sign;
 
         return $this;
     }
@@ -59,5 +87,24 @@ class Currency implements MappableObject
     public function isNewRecord()
     {
         return $this->getId() === null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

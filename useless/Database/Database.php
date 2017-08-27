@@ -23,26 +23,22 @@ class Database
      */
     protected $engine;
 
-    protected $app;
-
 
     /**
      * Database constructor.
      *
      * @param EngineInterface $engine
-     * @param Application $app
      */
-    public function __construct(EngineInterface $engine, Application $app)
+    public function __construct(EngineInterface $engine)
     {
         $this->engine = $engine;
-        $this->app = $app;
 
         $this->connect();
     }
 
     private function connect()
     {
-        $config = $this->app['config']->get('database');
+        $config = config()->get('database');
 
         $this->engine->connect($config);
     }

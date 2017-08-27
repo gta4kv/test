@@ -21,26 +21,19 @@ class AuthController extends Controller
 
     public function actionAuth()
     {
-        if ($this->request->getIsPost()) {
-            $this->getAuth($this->request->post('email'), $this->request->post('password'));
+        if (request()->isPost()) {
+            $this->getAuth(request()->post('email'), request()->post('password'));
         }
 
-        return $this->view->render('@admin/login.twig', [
+        return view()->render('@admin/login.twig', [
             'error' => $this->getError()
         ]);
-    }
-
-    public function actionLogout()
-    {
-        $this->request->getSession()->set('user', '');
-
-        $this->response->redirect('/');
     }
 
     private function getAuth($email, $password)
     {
         /* @var PlayerService $service */
-        $service = $this->app->make(PlayerService::class);
+        $service = app(PlayerService::class);
 
         /* @var Player $admin */
         $admin = $service->findByEmail($email);
@@ -54,9 +47,17 @@ class AuthController extends Controller
 
     public function setAuth(Player $user)
     {
-        $this->request->getSession()->set('user', $user);
+        session()->set('user', $user);
 
-        $this->response->redirect('/?loginSuccessful=1');
+        response()->redirect('/?loginSuccessful=1');
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 
     /**
@@ -70,12 +71,11 @@ class AuthController extends Controller
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getError()
+    public function actionLogout()
     {
-        return $this->error;
+        session()->set('user', '');
+
+        response()->redirect('/');
     }
 
 }

@@ -8,7 +8,7 @@ use Useless\Validator\Contract\ValidationInterface;
  * Class LengthValidator
  * @package Validator\Validators
  */
-class IntegerValidator extends AbstractValidator implements ValidationInterface
+class NumericValidator extends AbstractValidator implements ValidationInterface
 {
     /**
      * @param $value
@@ -16,8 +16,8 @@ class IntegerValidator extends AbstractValidator implements ValidationInterface
      */
     public function validate($value)
     {
-        if (!is_int($value)) {
-            return ' should be an integer';
+        if (!is_numeric($value)) {
+            return ' should be a number';
         }
 
         if ($min = $this->getParam('min')) {

@@ -20,16 +20,54 @@
 
     <table class="table table-bordered">
         <thead>
+        <tr>
+            <td>Type</td>
+            <td>Seller</td>
+            <td>PM</td>
+            <td>Min/max</td>
+            <td>Price per 1 BTC</td>
+            {% if user %}
+                <td>Trade</td>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for offer in offerService.findAllEnabled(user.getId()) %}
+            {% set currency = currencyService.findById(offer.getCurrencyId()) %}
             <tr>
-                <td>Type</td>
-                <td>Seller</td>
-                <td>PM</td>
-                <td>Min/max</td>
-                <td>Price per 1 BTC</td>
+                <td>
+                    {% if offer.getType() == 0 %}
+                        Sell
+                    {% else %}
+                        Buy
+                    {% endif %}
+                </td>
+                <td>{{ playerService.findById(offer.getPlayerId()).getFullName() }}</td>
+                <td>{{ paymentMethodService.findById(offer.getPaymentMethodId()).getName() }}</td>
+                <td>{{ offer.getMin() }} {{ currency.getSign() }} / {{ offer.getMax( ) }} {{ currency.getSign() }}</td>
+                <td>{{ (bitcoin + ((offer.getMargin() / 100) * bitcoin)) * currency.getExchangeRate() }} {{ currency.getSign() }}</td>
                 {% if user %}
-                    <td>Trade</td>
+                    <td>
+                        <form class="form-inline" method="post" action="/trade/create">
+                            <div class="form-group">
+                                <input type="text" class="form-control" value="" placeholder="Amount" required>
+                            </div>
+                            {% if offer.getType() == 0 %}
+                                <input type="hidden" name="tradeType" value="0">
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-default">Sell</button>
+                                </div>
+                            {% else %}
+                                <input type="hidden" name="tradeType" value="1">
+                                <div class="form-group">
+                                    <button class="btn btn-sm btn-default">Buy</button>
+                                </div>
+                            {% endif %}
+                        </form>
+                    </td>
                 {% endif %}
             </tr>
-        </thead>
+        {% endfor %}
+        </tbody>
     </table>
 {% endblock %}

@@ -18,36 +18,18 @@ use Useless\Application;
 class Request
 {
     /**
-     * @var null
-     */
-    private $csrfToken = null;
-
-    /**
      * @var Session
      */
     protected $session;
+    /**
+     * @var null
+     */
+    private $csrfToken = null;
 
     public function __construct(Application $app)
     {
         $this->session = $app['session'];
     }
-
-    /**
-     * @return string
-     */
-    public function getMethod()
-    {
-        if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
-            return strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
-        }
-
-        if (isset($_SERVER['REQUEST_METHOD'])) {
-            return strtoupper($_SERVER['REQUEST_METHOD']);
-        }
-
-        return 'GET';
-    }
-
 
     /**
      *
@@ -104,9 +86,25 @@ class Request
      * Проверяет если это POST запрос
      * @return bool
      */
-    public function getIsPost()
+    public function isPost()
     {
         return $this->getMethod() == 'POST';
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod()
+    {
+        if (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
+            return strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
+        }
+
+        if (isset($_SERVER['REQUEST_METHOD'])) {
+            return strtoupper($_SERVER['REQUEST_METHOD']);
+        }
+
+        return 'GET';
     }
 
     /**
@@ -114,7 +112,7 @@ class Request
      *
      * @return bool
      */
-    public function getIsGet()
+    public function isGet()
     {
         return $this->getMethod() == 'GET';
     }

@@ -21,10 +21,13 @@ use ReflectionParameter;
 class Container implements ArrayAccess
 {
     /**
+     * @var Container
+     */
+    public static $instance;
+    /**
      * @var array
      */
     public $instances = [];
-
     /**
      * @var array
      */
@@ -32,12 +35,15 @@ class Container implements ArrayAccess
     /**
      * @var
      */
-    public static $instance;
+    protected $aliases;
 
     /**
-     * @var
+     * @return Container
      */
-    protected $aliases;
+    public static function getInstance()
+    {
+        return static::$instance;
+    }
 
     /**
      * @param Container $container
@@ -45,14 +51,6 @@ class Container implements ArrayAccess
     public static function setInstance(Container $container)
     {
         static::$instance = $container;
-    }
-
-    /**
-     * @return mixed
-     */
-    public static function getInstance()
-    {
-        return static::$instance;
     }
 
     /**
@@ -66,71 +64,11 @@ class Container implements ArrayAccess
 
     /**
      * @param $abstract
-     * @return mixed
-     */
-    public function getAlias($abstract)
-    {
-        if (!isset($this->aliases[$abstract])) {
-            return $abstract;
-        }
-
-        return $this->aliases[$abstract];
-    }
-
-    /**
-     * @param $abstract
      * @param $concrete
      */
     public function alias($abstract, $concrete)
     {
         $this->aliases[$abstract] = $concrete;
-    }
-
-    /**
-     * @param $abstract
-     * @param null $concrete
-     */
-    public function bind($abstract, $concrete = null)
-    {
-        $abstract = $this->getAlias($abstract);
-
-        if (is_null($concrete)) {
-            $concrete = $abstract;
-        }
-
-        $this->bindings[$abstract] = compact('concrete');
-    }
-
-    /**
-     * @param $class
-     * @return mixed|object
-     * @throws Exception
-     */
-    public function make($class)
-    {
-        $class = $this->getAlias($class);
-
-        if (isset($this->instances[$class])) {
-            return $this->instances[$class];
-        }
-
-        $class = $this->getConcrete($class);
-
-        return $this->build($class);
-    }
-
-
-    /**
-     * @param $abstract
-     * @return string
-     */
-    public function getConcrete($abstract)
-    {
-        if (! isset($this->bindings[$abstract])) {
-            return  '\\'.$abstract;
-        }
-
-        return $this->bindings[$abstract]['concrete'];
     }
 
     /**
@@ -161,6 +99,50 @@ class Container implements ArrayAccess
         } catch (Exception $e) {
             throw $e;
         }
+    }
+
+    /**
+     * @param $class
+     * @return mixed|object
+     * @throws Exception
+     */
+    public function make($class)
+    {
+        $class = $this->getAlias($class);
+
+        if (isset($this->instances[$class])) {
+            return $this->instances[$class];
+        }
+
+        $class = $this->getConcrete($class);
+
+        return $this->build($class);
+    }
+
+    /**
+     * @param $abstract
+     * @return mixed
+     */
+    public function getAlias($abstract)
+    {
+        if (!isset($this->aliases[$abstract])) {
+            return $abstract;
+        }
+
+        return $this->aliases[$abstract];
+    }
+
+    /**
+     * @param $abstract
+     * @return string
+     */
+    public function getConcrete($abstract)
+    {
+        if (!isset($this->bindings[$abstract])) {
+            return '\\' . $abstract;
+        }
+
+        return $this->bindings[$abstract]['concrete'];
     }
 
     /**
@@ -240,6 +222,21 @@ class Container implements ArrayAccess
     public function offsetSet($offset, $value)
     {
         $this->bind($offset, $value);
+    }
+
+    /**
+     * @param $abstract
+     * @param null $concrete
+     */
+    public function bind($abstract, $concrete = null)
+    {
+        $abstract = $this->getAlias($abstract);
+
+        if (is_null($concrete)) {
+            $concrete = $abstract;
+        }
+
+        $this->bindings[$abstract] = compact('concrete');
     }
 
     /**

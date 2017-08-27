@@ -7,7 +7,8 @@ use Useless\Validator\Contract\ValidationInterface;
 use Useless\Validator\Validators\ClosureValidator;
 use Useless\Validator\Validators\DateValidator;
 use Useless\Validator\Validators\EmailValidator;
-use Useless\Validator\Validators\IntegerValidator;
+use Useless\Validator\Validators\NumericValidator;
+use Useless\Validator\Validators\InValidator;
 use Useless\Validator\Validators\LengthValidator;
 use Useless\Validator\Validators\RequiredValidator;
 
@@ -37,10 +38,11 @@ class Validator
     public static $validators = [
         'required' => RequiredValidator::class,
         'closure'  => ClosureValidator::class,
-        'integer'  => IntegerValidator::class,
+        'numeric'  => NumericValidator::class,
         'length'   => LengthValidator::class,
         'email'    => EmailValidator::class,
         'date'     => DateValidator::class,
+        'in'       => InValidator::class
     ];
 
     /**

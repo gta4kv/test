@@ -21,53 +21,33 @@ use Useless\Http\Exceptions\NotFoundHttpException;
 class Kernel
 {
     /**
-     * @var Application
-     */
-    public $app;
-    /**
-     * @var Router
-     */
-    public $router;
-
-    /**
-     * Kernel constructor.
-     * @param Application $app
-     * @param Router $router
-     */
-    public function __construct(Application $app, Router $router)
-    {
-        $this->app = $app;
-        $this->router = $router;
-    }
-
-    /**
      * @return Response
      */
     public function handle()
     {
-        $route = $this->router->matchCurrentRequest();
+        $route = app('router')->matchCurrentRequest();
 
         if (!$route instanceof Route) {
             throw new NotFoundHttpException;
         }
 
         /** @var $pipe Pipeline */
-        $pipe = $this->app->make(Pipeline::class);
+        $pipe = app(Pipeline::class);
 
-        return $pipe->send($this->app['request'])
+        return $pipe->send(request())
             ->through($route->getMiddleware() ? $route->getMiddleware() : [])
             ->then(function (Request $request) use ($route) {
                 $content = $this->createAction($route);
 
                 $request->terminate();
-                
-                return $this->app['response']->setContent($content);
+
+                return response()->setContent($content);
             });
     }
 
     public function createAction(Route $route)
     {
-        $callable = [$this->app->make($route->getController()), $route->getAction()];
+        $callable = [app($route->getController()), $route->getAction()];
 
         return call_user_func_array($callable, $route->getParameters());
     }
