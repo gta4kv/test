@@ -1,11 +1,11 @@
-# Requirements
+# Tested/Requirements
 
-PHP >= 5.6, PHP56-PDO, MySQL
+PHP >= 7.2, PHP72-PDO, PHP72-APCU, MySQL
 
 # Setting Up
 
 1) Configure Web-Server, typical framework configuration
-- all request should be rewrited to index.php?$args
+- all request should be rewritten to index.php?$args
 - document root must be set to ./public directory
 
 Config example for nginx:
@@ -38,12 +38,6 @@ Config example for nginx:
 - Configure database in ./config/database.php
 
 3) All done, you are awesome!
-
-#### Admin credentials
-
-Email: admin@admin.com
-
-Password: admin
 
 
 # How it works
