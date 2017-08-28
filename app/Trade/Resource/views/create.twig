@@ -1,0 +1,76 @@
+{% extends '@main/template.twig' %}
+
+
+{% block content %}
+
+    <h3 class="text-center">Create new trade</h3>
+
+    {% if errors %}
+        <div class="alert alert-danger">
+            Please check following data and try creating trade again:
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="clearfix">
+                Trade
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td>Type</td>
+                    <td>Seller</td>
+                    <td>PM</td>
+                    <td>Min/max</td>
+                    <td>Price per 1 BTC</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% set currency = currencyService.findById(offer.getCurrencyId()) %}
+                <tr>
+                    <td>
+                        {% if offer.getType() == 0 %}
+                            Sell
+                        {% else %}
+                            Buy
+                        {% endif %}
+                    </td>
+                    <td>{{ playerService.findById(offer.getPlayerId()).getFullName() }}</td>
+                    <td>{{ paymentMethodService.findById(offer.getPaymentMethodId()).getName() }}</td>
+                    <td>{{ offer.getMin() }} {{ currency.getSign() }}
+                        / {{ offer.getMax( ) }} {{ currency.getSign() }}</td>
+                    <td>{{ calculate_bitcoin(currency, offer) }} {{ currency.getSign() }}</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+            <form class="form-inline" method="post" action="/trade/create/{{ offer.getId() }}">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="amount" value="{{ trade.getAmountFiat() }}"
+                           placeholder="Amount" required>
+                </div>
+                {% if offer.getType() == 0 %}
+                    <input type="hidden" name="tradeType" value="0">
+                    <div class="form-group">
+                        <button class="btn btn-default">Sell</button>
+                    </div>
+                {% else %}
+                    <input type="hidden" name="tradeType" value="1">
+                    <div class="form-group">
+                        <button class="btn btn-default">Buy</button>
+                    </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

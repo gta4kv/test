@@ -163,7 +163,16 @@ abstract class Mapper
         return $this->findByAny('id', '0', '>', false);
     }
 
-    abstract public function delete($id);
+    public function delete($id)
+    {
+        $sql = "DELETE FROM {$this->getTableName()} WHERE id = :id";
+
+        $this->database->queryPrepared($sql, [
+            'id' => $id
+        ]);
+
+        return true;
+    }
 
     abstract public function create(MappableObject $object);
 

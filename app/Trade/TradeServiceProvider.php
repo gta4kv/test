@@ -25,8 +25,10 @@ class TradeServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        view()->addModule('Trade', 'trade');
+
         route()->add(new Route(
-            '/trade/create',
+            '/trade/create/:offerId',
             ['POST', 'GET'],
             TradeController::class . '@actionCreate', [Auth::class]
         ));

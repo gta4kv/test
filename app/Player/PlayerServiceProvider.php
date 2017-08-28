@@ -61,6 +61,6 @@ class PlayerServiceProvider extends ServiceProvider
             DashboardController::class . '@actionList', [Auth::class]
         ));
 
-        view()->addModule('Player', 'admin');
+        view()->addModule('Player', 'player');
     }
 }

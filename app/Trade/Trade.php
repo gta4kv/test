@@ -38,11 +38,6 @@ class Trade implements MappableObject
     private $partnerId;
 
     /**
-     * @var int
-     */
-    private $paymentMethodId;
-
-    /**
      * @var float
      */
     private $amountFiat;
@@ -114,25 +109,6 @@ class Trade implements MappableObject
     public function setPartnerId($partnerId)
     {
         $this->partnerId = $partnerId;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPaymentMethodId()
-    {
-        return $this->paymentMethodId;
-    }
-
-    /**
-     * @param int $paymentMethodId
-     * @return $this
-     */
-    public function setPaymentMethodId($paymentMethodId)
-    {
-        $this->paymentMethodId = $paymentMethodId;
 
         return $this;
     }

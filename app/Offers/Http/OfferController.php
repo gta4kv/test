@@ -29,7 +29,7 @@ class OfferController extends Controller
         /** @var MethodService $methodService */
         $methodService = app(MethodService::class);
 
-        return $this->view->render('@offers/list.twig', [
+        return view()->render('@offers/list.twig', [
             'groups'               => json_encode($groupService->findAll()),
             'method'               => json_encode($methodService->findAll()),
             'bitcoin'              => apcu_fetch('bitcoin'),

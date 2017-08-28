@@ -8,7 +8,6 @@
 
 namespace Useless\Http;
 
-use App\Admin\Admin;
 use App\Player\Player;
 use App\Player\Service\PlayerService;
 use Useless\Application;

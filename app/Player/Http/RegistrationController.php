@@ -32,7 +32,7 @@ class RegistrationController extends Controller
             }
         }
 
-        return view()->render('@admin/register.twig', [
+        return view()->render('@player/register.twig', [
             'player' => $player,
             'errors' => $errors
         ]);

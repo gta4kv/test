@@ -1,6 +1,5 @@
 {% extends '@main/template.twig' %}
 
-
 {% block content %}
     <script>
         var methodGroups = {{ groups|raw }};
@@ -45,12 +44,13 @@
                 <td>{{ playerService.findById(offer.getPlayerId()).getFullName() }}</td>
                 <td>{{ paymentMethodService.findById(offer.getPaymentMethodId()).getName() }}</td>
                 <td>{{ offer.getMin() }} {{ currency.getSign() }} / {{ offer.getMax( ) }} {{ currency.getSign() }}</td>
-                <td>{{ (bitcoin + ((offer.getMargin() / 100) * bitcoin)) * currency.getExchangeRate() }} {{ currency.getSign() }}</td>
+                <td>{{ calculate_bitcoin(currency, offer) }} {{ currency.getSign() }}</td>
                 {% if user %}
                     <td>
-                        <form class="form-inline" method="post" action="/trade/create">
+                        <form class="form-inline" method="post" action="/trade/create/{{ offer.getId() }}">
                             <div class="form-group">
-                                <input type="text" class="form-control" value="" placeholder="Amount" required>
+                                <input type="text" class="form-control" name="amount" value="" placeholder="Amount"
+                                       required>
                             </div>
                             {% if offer.getType() == 0 %}
                                 <input type="hidden" name="tradeType" value="0">

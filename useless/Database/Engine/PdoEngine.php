@@ -9,6 +9,7 @@
 namespace Useless\Database\Engine;
 
 use PDO;
+use PDOStatement;
 
 /**
  * Class PdoEngine
@@ -22,7 +23,7 @@ class PdoEngine implements EngineInterface
     private $connection;
 
     /**
-     * @var
+     * @var PDOStatement
      */
     private $query;
 

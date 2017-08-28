@@ -25,7 +25,7 @@ class AuthController extends Controller
             $this->getAuth(request()->post('email'), request()->post('password'));
         }
 
-        return view()->render('@admin/login.twig', [
+        return view()->render('@player/login.twig', [
             'error' => $this->getError()
         ]);
     }

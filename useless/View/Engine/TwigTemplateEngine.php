@@ -8,7 +8,8 @@
 
 namespace Useless\View\Engine;
 
-use Exception;
+use App\Payment\Bitcoin;
+use Twig_SimpleFunction;
 
 /**
  * Class VanillaTemplateEngine
@@ -37,6 +38,8 @@ class TwigTemplateEngine implements EngineInterface
         $this->twig = new \Twig_Environment($this->loader, [
             'cache' => false
         ]);
+
+        $this->twig->addFunction('calculate_bitcoin', new Twig_SimpleFunction('calculate_bitcoin', [Bitcoin::class, 'calculate']));
     }
 
     /**

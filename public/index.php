@@ -3,10 +3,10 @@ $startTime = microtime();
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$app = require_once __DIR__ . '/../bootstrap/application.php';
+require_once __DIR__ . '/../bootstrap/application.php';
 
 /* @var \Useless\Http\Kernel $kernel */
-$kernel = $app->make(Useless\Http\Kernel::class);
+$kernel = app(Useless\Http\Kernel::class);
 
 try {
     $response = $kernel->handle();
@@ -15,7 +15,7 @@ try {
         throw $exception;
     }
 
-    echo $app['view']->render('@main/error.twig', [
+    echo view()->render('@main/error.twig', [
         'exception' => $exception
     ]);
     die;

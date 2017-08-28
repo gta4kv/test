@@ -191,7 +191,7 @@ class Validator
     {
         $paramName = $this->getFieldTranslation($paramName);
 
-        $this->errors[] = "'{$paramName}' {$error}";
+        $this->errors[] = "{$paramName} {$error}";
     }
 
     /**
